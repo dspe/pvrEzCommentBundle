@@ -1,20 +1,20 @@
-### pvrEzCommentBundle
+# pvrEzCommentBundle
 
 The ```pvrEzCommentBundle``` adds support for comments for ezpublish 5. This is an evolution from original extension
 eZComments available on legacy stack.
 
-Important note: the master of this repository is containing current development in order to work with eZ Publish 2014.6.
+Important note: the master of this repository is containing current development in order to work with eZ Publish 2013.6.
 If you are using old version of eZ Publish, this will probably not work and will be not supported too.
 
-### Installation
+## Installation
 
-## Requirements
+### Requirements
 
 In order to work fully, this bundle need to have some dependencies:
 * Gregwar's CaptchaBundle
 * SwiftMailer Bundle
 
-## Step 1: Download pvrEzCommentBundle
+### Step 1: Download pvrEzCommentBundle
 
 You can accomplish this several ways, depending on your personal preference.
 
@@ -26,7 +26,7 @@ Add the following to the "require" section of your ```composer.json``` file.
     "dspe/pvrEzCommentBundle": "dev-master"
 ```
 
-## Step 2: Enable the Bundle
+### Step 2: Enable the Bundle
 
 Enable the bundle in the EzpublishKernel:
 
@@ -43,7 +43,7 @@ public function registerBundles()
 }
 ```
 
-## Configuration
+### Configuration
 
 We recommend to add this routing to your ```routing.yml``` file
 
@@ -88,7 +88,7 @@ You could define a new *subject*, *template* and so on.
 
 ```notify_mail```: when a comment is approved, a mail could be sent to visitor to notice it.
 
-## Usage
+### Usage
 
 This first version require to enable ```YUI library``` and some css. You have to put those two lines on your project
 
@@ -107,23 +107,24 @@ On your template, for example article.html.twig, just put this line:
 
 That's all :)
 
-### Todo
+## Todo
 
 Of course this bundle is not finish but already usable. We don't recommend to use it on prod environment. Some
 new features should be enabled before this.
 
 What is implemented (and not) yet:
-[x] Add anonymous comment
-[x] Add ezuser comment (using informations form eZUser)
-[x] Add moderating status for comment
-[x] Send mail to administrator when a new comment should be approved
-[ ] Create an admin interface to approve/reject comments
-[ ] Add a second security system like Akismet
-[ ] Add PhpUnit testing
-[ ] Add translations (english and french at least)
+
+- [x] Add anonymous comment
+- [x] Add ezuser comment (using data form eZUser)
+- [x] Add moderating status for comment
+- [x] Send mail to administrator when a new comment should be approved
+- [ ] Create an admin interface to approve/reject comments
+- [ ] Add a second security system like Akismet
+- [ ] Add PhpUnit testing
+- [ ] Add translations (english and french at least)
 
 Feel free to participate :)
 
-### License
+## License
 
 This bundle is under the MIT license. See the complete license in the bundle: LICENSE
