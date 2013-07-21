@@ -1,6 +1,5 @@
 ### pvrEzCommentBundle
 
-
 The ```pvrEzCommentBundle``` adds support for comments for ezpublish 5. This is an evolution from original extension
 eZComments available on legacy stack.
 
@@ -19,7 +18,7 @@ In order to work fully, this bundle need to have some dependencies:
 
 You can accomplish this several ways, depending on your personal preference.
 
-** Using composer.json **
+**Using composer.json**
 
 Add the following to the "require" section of your ```composer.json``` file.
 
@@ -80,9 +79,51 @@ pvr_ez_comment:
 **Description**
 
 ```anonymous```: set to true if you would like to use anonymous comment. This will use captcha to prevent spam.
+
 ```moderating```: if you would like to moderate content before publishing it. You have to fill correctly *moderate_mail*
 settings and *notify_mail* settings.
+
 ```moderate_mail```: when *moderating* is set to true, an user will receive an email each time a comment should be moderate.
 You could define a new *subject*, *template* and so on.
+
 ```notify_mail```: when a comment is approved, a mail could be sent to visitor to notice it.
 
+## Usage
+
+This first version require to enable ```YUI library``` and some css. You have to put those two lines on your project
+
+```jinga
+    '@pvrEzCommentBundle/Resources/public/js/yui/3.11.0/build/yui/yui-min.js'
+```
+
+```jinga
+   '@pvrEzCommentBundle/Resources/public/css/pvrezcomment.css'
+```
+
+On your template, for example article.html.twig, just put this line:
+```jinga
+     {{ render( controller( "pvrEzCommentBundle:Comment:getComments", {'contentId': content.id })) }}
+```
+
+That's all :)
+
+### Todo
+
+Of course this bundle is not finish but already usable. We don't recommend to use it on prod environment. Some
+new features should be enabled before this.
+
+What is implemented (and not) yet:
+[x] Add anonymous comment
+[x] Add ezuser comment (using informations form eZUser)
+[x] Add moderating status for comment
+[x] Send mail to administrator when a new comment should be approved
+[ ] Create an admin interface to approve/reject comments
+[ ] Add a second security system like Akismet
+[ ] Add PhpUnit testing
+[ ] Add translations (english and french at least)
+
+Feel free to participate :)
+
+### License
+
+This bundle is under the MIT license. See the complete license in the bundle: LICENSE
