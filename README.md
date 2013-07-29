@@ -71,6 +71,7 @@ pvr_ez_comment:
         to:       "me@example.com"
         template: "pvrEzCommentBundle:mail:email_moderate.txt.twig"
     notify_mail:
+        enabled:  false
         subject:  "Notify mail"
         from:     "noreply@example.com"
         template: "pvrEzCommentbundle:mail:email.txt.twig"
@@ -119,6 +120,7 @@ What is implemented (and not) yet:
 - [x] Add moderating status for comment
 - [x] Send mail to administrator when a new comment should be approved
 - [x] Create an control interface to approve/reject comments
+- [ ] Notify visitor's part is not implemented yet
 - [ ] Add more documentation on php file and create a doc folder
 - [ ] Add a second security system like Akismet
 - [ ] Add PhpUnit testing
