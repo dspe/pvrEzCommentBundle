@@ -26,8 +26,12 @@ class CommentController extends Controller
      * @param $contentId id from current content
      * @return Response
      */
-    public function getCommentsAction( $contentId )
+    public function getCommentsAction( $contentId, $locationId )
     {
+        $response = new Response();
+        $response->setMaxAge( $this->container->getParameter( 'pvr_ezcomment.maxage' ) );
+        $response->headers->set( 'X-Location-Id', $locationId );
+
         $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
         $connection = $this->container->get( 'ezpublish.connection' );
 
@@ -38,7 +42,8 @@ class CommentController extends Controller
             array(
                 'comments'  => $comments,
                 'contentId' => $contentId
-            )
+            ),
+            $response
         );
     }
 

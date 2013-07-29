@@ -103,7 +103,7 @@ This first version require to enable ```YUI library``` and some css. You have to
 
 On your template, for example article.html.twig, just put this line:
 ```jinga
-     {{ render( controller( "pvrEzCommentBundle:Comment:getComments", {'contentId': content.id })) }}
+     {{ render_esi( controller( "pvrEzCommentBundle:Comment:getComments", {'contentId': content.id, 'locationId': location.id })) }}
 ```
 
 That's all :)
@@ -120,11 +120,12 @@ What is implemented (and not) yet:
 - [x] Add moderating status for comment
 - [x] Send mail to administrator when a new comment should be approved
 - [x] Create an control interface to approve/reject comments
+- [x] ESI support for production env.
+- [x] Add translations (english and french at least)
 - [ ] Notify visitor's part is not implemented yet
 - [ ] Add more documentation on php file and create a doc folder
 - [ ] Add a second security system like Akismet
 - [ ] Add PhpUnit testing
-- [x] Add translations (english and french at least)
 - [ ] Add rss feed to comment by content
 
 
