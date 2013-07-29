@@ -11,7 +11,9 @@
 
 namespace pvr\EzCommentBundle\Comment;
 
-class pvrEzCommentEncryption
+use pvr\EzCommentBundle\Comment\pvrEzCommentEncryptionInterface;
+
+class pvrEzCommentEncryption implements pvrEzCommentEncryptionInterface
 {
     /**
      * @var Contains the secret key
