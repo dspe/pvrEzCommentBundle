@@ -1,4 +1,4 @@
-<h4>{{ comments|length }} Commentaires</h4>
+<h4>{{ comments|length }} Comments</h4>
 
 {{ render( controller( "pvrEzCommentBundle:Comment:getFormComment", {'contentId': contentId })) }}
 
@@ -23,11 +23,11 @@
                     <footer>{#
                         <menu>
                             <li class="reply">
-                                <a href="#">Répondre</a>
+                                <a href="#">Answer</a>
                             </li>
                             <li class="bullet"> • </li>
                             <li class="share">
-                                <a href="#">Partager</a>
+                                <a href="#">Share</a>
                             </li>
                         </menu>
                         #}
@@ -39,9 +39,3 @@
     {% endfor %}
     </ul>
 {% endif %}
-
-{% for flashMessage in app.session.flashbag.get('info') %}
-    <div class="flash-info">
-        {{ flashMessage }}
-    </div>
-{% endfor %}
