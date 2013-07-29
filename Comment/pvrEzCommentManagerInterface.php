@@ -67,9 +67,9 @@ interface pvrEzCommentManagerInterface
     /**
      * Send message to admin(s)
      */
-    public function sendMessage( $data, $user, $contentId, $sessionId );
+    public function sendMessage( $data, $user, $contentId, $sessionId, $commentId );
 
-    public function canUpdate( $contentId, $sessionHash, $connection);
+    public function canUpdate( $contentId, $sessionHash, $connection, $commentId );
 
     public function updateStatus( $connection, $commentId, $status = self::COMMENT_ACCEPT );
 

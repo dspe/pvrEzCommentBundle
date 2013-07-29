@@ -165,6 +165,8 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
             ->set( 'title',             $selectQuery->bindValue( $title ));
         $statement = $selectQuery->prepare();
         $statement->execute();
+
+        return $connection->lastInsertId();
     }
 
     /**
@@ -214,6 +216,8 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
             ->set( 'title',             $selectQuery->bindValue( $title ));
         $statement = $selectQuery->prepare();
         $statement->execute();
+
+        return $connection->lastInsertId();
     }
 
 
@@ -302,7 +306,7 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     /**
      * Send message to admin(s)
      */
-    public function sendMessage( $data, $user, $contentId, $sessionId )
+    public function sendMessage( $data, $user, $contentId, $sessionId, $commentId )
     {
         if ($user == null)
         {
@@ -323,7 +327,8 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
             array(
                 'contentId' => $contentId,
                 'sessionHash' => $encodeSession,
-                'action' => 'approve'
+                'action' => 'approve',
+                'commentId' => $commentId
             ),
             true
         );
@@ -332,7 +337,8 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
             array(
                 'contentId' => $contentId,
                 'sessionHash' => $encodeSession,
-                'action' => 'reject'
+                'action' => 'reject',
+                'commentId' => $commentId
             ),
             true
         );
@@ -361,7 +367,7 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
      * @param $connection
      * @return bool
      */
-    public function canUpdate( $contentId, $sessionHash, $connection)
+    public function canUpdate( $contentId, $sessionHash, $connection, $commentId )
     {
         $this->checkConnection( $connection );
 
@@ -387,6 +393,10 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
                     $selectQuery->expr->eq(
                         $connection->quoteColumn( 'status' ),
                         $selectQuery->bindValue( self::COMMENT_WAITING, null, \PDO::PARAM_INT )
+                    ),
+                    $selectQuery->expr->eq(
+                        $connection->quoteColumn( 'id' ),
+                        $selectQuery->bindValue( $commentId, null, \PDO::PARAM_INT )
                     )
                 )
             );
@@ -395,7 +405,7 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
 
         $row = $statement->fetch();
 
-        return count( $row ) > 0 ? $row["id"] : false;
+        return $row !== false ? true : false;
     }
 
     /**
