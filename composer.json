@@ -1,0 +1,25 @@
+{
+    "name": "pvr/EzCommentBundle",
+    "type": "ezpublish-bundle",
+    "description": "pvr EzComemnt Bundle",
+    "keywords": ["symfony2", "comment", "pvr", "ezpublish" ],
+    "homepage": "https://github.com/dspe/pvrEzCommentBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Philippe Vincent-Royol",
+            "email": "vincent.royol@gmail.com",
+            "homepage": "http://www.pheelit.fr/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "ezsystems/ezpublish-kernel": "5.1.0-stable"
+    },
+    "autoload": {
+        "psr-0": {
+            "pvr": ""
+        }
+    },
+    "target-dir": "pvr/EzCommentBundle"
+}

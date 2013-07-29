@@ -1,0 +1,47 @@
+<h4>{{ comments|length }} Commentaires</h4>
+
+{{ render( controller( "pvrEzCommentBundle:Comment:getFormComment", {'contentId': contentId })) }}
+
+{% if comments %}
+    {# comment.user_id  comment.email comment.title #}
+    <ul id="comment-list" class="comment-list">
+    {% for comment in comments %}
+        <li class="comment" id="comment-{{ comment.id }}">
+            <div class="comment-role">
+                <div class="avatar">
+                    <img class="user" alt="Avatar" src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;size=48">
+                </div>
+                <div class="comment-body">
+                    <header>
+                        <span class="name">{{ comment.name }}</span>
+                        <span class="bullet"> • </span>
+                        <a href="#">{{ comment.created|date('d/m/Y') }}</a>
+                    </header>
+                    <div class="comment-container">
+                        {{ comment.text|nl2br }}
+                    </div>
+                    <footer>{#
+                        <menu>
+                            <li class="reply">
+                                <a href="#">Répondre</a>
+                            </li>
+                            <li class="bullet"> • </li>
+                            <li class="share">
+                                <a href="#">Partager</a>
+                            </li>
+                        </menu>
+                        #}
+                    </footer>
+
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% for flashMessage in app.session.flashbag.get('info') %}
+    <div class="flash-info">
+        {{ flashMessage }}
+    </div>
+{% endfor %}

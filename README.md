@@ -118,10 +118,13 @@ What is implemented (and not) yet:
 - [x] Add ezuser comment (using data form eZUser)
 - [x] Add moderating status for comment
 - [x] Send mail to administrator when a new comment should be approved
-- [ ] Create an admin interface to approve/reject comments
+- [x] Create an control interface to approve/reject comments
+- [ ] Add more documentation on php file and create a doc folder
 - [ ] Add a second security system like Akismet
 - [ ] Add PhpUnit testing
 - [ ] Add translations (english and french at least)
+- [ ] Add rss feed to comment by content
+
 
 Feel free to participate :)
 

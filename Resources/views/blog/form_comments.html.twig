@@ -1,0 +1,24 @@
+{% if form %}
+<div id="formError"></div>
+<div id="formSuccess"></div>
+
+{% form_theme form with 'pvrEzCommentBundle:form:captcha.html.twig' %}
+
+<form id="commentForm" action="{{ path( 'pvrezcomment_add', { 'contentId': contentId } ) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+
+    <div>
+        <input type="submit" name="AddComment" class="submitComment" />
+    </div>
+</form>
+
+{% javascripts "@pvrEzCommentBundle/Resources/public/js/pvrEzCommentBundle.js" %}
+    <script type="text/javascript">
+        window.url = "{{ path( 'pvrezcomment_add', { 'contentId': contentId }) }}";
+    </script>
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% else %}
+   <strong>{% trans %}You must be connected to add a comment{% endtrans %}</strong>
+{% endif %}
