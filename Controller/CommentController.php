@@ -20,6 +20,12 @@ use Symfony\Component\Validator\Constraints\Collection;
 
 class CommentController extends Controller
 {
+    /**
+     * List comments from a certain contentId
+     *
+     * @param $contentId id from current content
+     * @return Response
+     */
     public function getCommentsAction( $contentId )
     {
         $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
@@ -63,11 +69,19 @@ class CommentController extends Controller
         );
     }
 
+    /**
+     * Add a comment via ajax call
+     *
+     * @param Request $request
+     * @param $contentId id of content to insert comment
+     * @return Response
+     */
     public function addCommentAction( Request $request, $contentId )
     {
         $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
         if ( $request->isXmlHttpRequest() )
         {
+            // Check if user is anonymous or not and generate correct form
             $isAnonymous = false;
             if ( $pvrEzCommentManager->hasAnonymousAccess() )
             {
@@ -85,6 +99,7 @@ class CommentController extends Controller
                 $connection = $this->container->get( 'ezpublish.connection' );
                 $localeService = $this->container->get( 'ezpublish.locale.converter' );
 
+                // Save data depending of user (anonymous or ezuser)
                 if ( $isAnonymous )
                 {
                     $pvrEzCommentManager->addAnonymousComment(
@@ -111,6 +126,7 @@ class CommentController extends Controller
                     );
                 }
 
+                // Check if you need to moderate comment or not
                 if ( $pvrEzCommentManager->hasModeration() )
                 {
                     if (!isset( $currentUser )) $currentUser = null;
@@ -142,41 +158,43 @@ class CommentController extends Controller
         return new Response( 'Something goes wrong !', 400 );
     }
 
-    public function approveAction( $contentId, $sessionHash )
+    /**
+     * After receiving email choose if you would like to approve it or not
+     *
+     * @param $contentId id of content
+     * @param $sessionHash hash session do decrypt for transaction
+     * @param $action approve|reject value
+     * @return Response
+     */
+    public function commentModerateAction( $contentId, $sessionHash, $action )
     {
         $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
         $connection = $this->container->get( 'ezpublish.connection' );
 
         // Check if comment has waiting status..
         $commentId = $pvrEzCommentManager->canUpdate( $contentId, $sessionHash, $connection );
+
         if ( $commentId )
         {
-            // Update status
-            if ( $pvrEzCommentManager->updateStatus( $connection, $commentId ) )
+            if ( $action == "approve" )
             {
-                return new Response( "Comment publish :)" );
+                // Update status
+                if ( $pvrEzCommentManager->updateStatus( $connection, $commentId ) )
+                {
+                    return new Response( "Comment publish :)" );
+                }
             }
+            else
+            {
+                // Update status
+                if ( $pvrEzCommentManager->updateStatus( $connection, $commentId, $pvrEzCommentManager::COMMENT_REJECTED ) )
+                {
+                    return new Response( "Comment rejected :(" );
+                }
+            }
+
         }
-        // throw error ?
         return new Response( "An unexpected error has occurred. please contact the webmaster :(", 406 );
     }
 
-    public function rejectAction( $contentId, $sessionHash )
-    {
-        $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
-        $connection = $this->container->get( 'ezpublish.connection' );
-
-        // Check if comment has waiting status..
-        $commentId = $pvrEzCommentManager->canUpdate( $contentId, $sessionHash, $connection );
-        if ( $commentId )
-        {
-            // Update status
-            if ( $pvrEzCommentManager->updateStatus( $connection, $commentId, $pvrEzCommentManager::COMMENT_REJECTED ) )
-            {
-                return new Response( "Comment rejected :(" );
-            }
-        }
-        // throw error ?
-        return new Response( "An unexpected error has occurred. please contact the webmaster :(", 406 );
-    }
 }

@@ -8,7 +8,13 @@ pvrezcomment_add:
         _method: POST
         contentId: \d+
 
-# @TODO: merge both route
+pvrezcomment_moderation:
+    pattern: /comment/{action}/{contentId}/{sessionHash}
+    defaults: { _controller: pvrEzCommentBundle:Comment:commentModerate, action: reject }
+    requirements:
+        contentId: \d+
+        action: approve|reject
+
 pvrezcomment_approve:
     pattern: /comment/approve/{contentId}/{sessionHash}
     defaults: { _controller: pvrEzCommentBundle:Comment:approve }

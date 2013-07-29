@@ -303,18 +303,20 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
         $encodeSession = $encrypt_service->encode( $sessionId );
 
         $approve_url = $this->container->get( 'router' )->generate(
-            'pvrezcomment_approve',
+            'pvrezcomment_moderation',
             array(
                 'contentId' => $contentId,
-                'sessionHash' => $encodeSession
+                'sessionHash' => $encodeSession,
+                'action' => 'approve'
             ),
             true
         );
         $reject_url = $this->container->get( 'router' )->generate(
-            'pvrezcomment_reject',
+            'pvrezcomment_moderation',
             array(
                 'contentId' => $contentId,
-                'sessionHash' => $encodeSession
+                'sessionHash' => $encodeSession,
+                'action' => 'reject'
             ),
             true
         );
