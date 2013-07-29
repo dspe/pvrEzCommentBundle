@@ -124,7 +124,7 @@ What is implemented (and not) yet:
 - [ ] Add more documentation on php file and create a doc folder
 - [ ] Add a second security system like Akismet
 - [ ] Add PhpUnit testing
-- [ ] Add translations (english and french at least)
+- [x] Add translations (english and french at least)
 - [ ] Add rss feed to comment by content
 
 
