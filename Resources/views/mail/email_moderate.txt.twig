@@ -1,15 +1,22 @@
+{% trans with {
+    '%name%': name,
+    '%email%': email,
+    '%comment%': comment,
+    '%approve_url%': approve_url,
+    '%reject_url%': reject_url } %}
 Hello,
 
 A new comment is waiting your approbation:
 
 User:
-    {{ name }} - {{ email }}
+    %name% - %email%
 Comment:
-    {{ comment }}
+    %comment%
 
 
-Approve comment: {{ approve_url }}
-Reject comment: {{ reject_url }}
+Approve comment: %approve_url%
+Reject comment: %reject_url%
 
 Best Regards,
 Your devoted server.
+{% endtrans %}

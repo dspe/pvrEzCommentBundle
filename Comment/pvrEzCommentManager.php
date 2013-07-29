@@ -37,6 +37,7 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     protected $moderate_template;
     protected $isNotify;
     protected $container;
+    protected $translator;
 
     public function __construct( $anonymous_access = false, $moderating = false,
                                  $moderate_subject, $moderate_from, $moderate_to, $moderate_template,
@@ -50,6 +51,7 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
         $this->moderate_template    = $moderate_template;
         $this->isNotify             = $isNotify;
         $this->container            = $container;
+        $this->translator           = $this->container->get( 'translator' );
     }
 
     /**
@@ -62,7 +64,11 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     {
         if ( !( $connection instanceof EzcDbHandler ) )
         {
-            throw new \InvalidArgumentException( 'Connection is not a valid eZ\\Publish\\Core\\Persistence\\Legacy\\EzcDbHandler' );
+            throw new \InvalidArgumentException(
+                $this->translator->trans( 'Connection is not a valid %ezdbhandler%',
+                    array( '%ezdbhandler%' => 'eZ\\Publish\\Core\\Persistence\\Legacy\\EzcDbHandler' )
+                )
+            );
         }
     }
 
@@ -136,7 +142,7 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
         $name       = $currentUser->versionInfo->contentInfo->name;
         $email      = $currentUser->email;
         $url        = "";
-        $text       = $data['message'];
+        $text       = $data[ $this->container->get( 'translator' )->trans( 'message' )];
         $status     = $this->hasModeration() ? self::COMMENT_WAITING : self::COMMENT_ACCEPT;;
         $title      = "";
 
@@ -182,10 +188,10 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
         $sessionKey = $sessionId;
         $ip         = $request->getClientIp();
         $parentCommentId = 0;
-        $name       = $data['name'];
-        $email      = $data['email'];
+        $name       = $data[ $this->container->get( 'translator' )->trans( 'name' )];
+        $email      = $data[ $this->container->get( 'translator' )->trans( 'email')];
         $url        = "";
-        $text       = $data['message'];
+        $text       = $data[ $this->container->get( 'translator' )->trans( 'message' )];
         $status     = $this->hasModeration() ? self::COMMENT_WAITING : self::COMMENT_ACCEPT;
         $title      = "";
 
@@ -219,17 +225,25 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     public function createAnonymousForm()
     {
         $collectionConstraint = new Collection( array(
-            'name'      => new NotBlank( array( "message" => "Could not be empty" ) ),
-            'email'     => new Email( array( "message" => "This is not a valid email" ) ),
-            'message'   => new NotBlank( array( "message" => "Could not be empty" ) ),
+            $this->container->get( 'translator' )->trans( 'name' ) => new NotBlank(
+                array( "message" => $this->translator->trans( "Could not be empty" ) )
+            ),
+            $this->container->get( 'translator' )->trans( 'email' ) => new Email(
+                array( "message" => $this->translator->trans( "This is not a valid email" ) )
+            ),
+            $this->container->get( 'translator' )->trans( 'message' ) => new NotBlank(
+                array( "message" => $this->translator->trans( "Could not be empty" ) )
+            ),
         ));
 
         $form = $this->container->get( 'form.factory' )->createBuilder( 'form', null, array(
             'constraints' => $collectionConstraint
-        ))->add( 'name', 'text')
-            ->add( 'email', 'email')
-            ->add( 'message', 'textarea' )
-            ->add( 'captcha', 'captcha', array( 'as_url' => true, 'reload' => true ) )
+        ))->add( $this->container->get( 'translator' )->trans( 'name' ), 'text')
+            ->add( $this->container->get( 'translator' )->trans( 'email' ), 'email')
+            ->add( $this->container->get( 'translator' )->trans( 'message' ), 'textarea' )
+            ->add( $this->container->get( 'translator' )->trans( 'captcha' ), 'captcha',
+                array( 'as_url' => true, 'reload' => true )
+            )
             ->getForm();
 
         return $form;
@@ -243,12 +257,14 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     public function createUserForm()
     {
         $collectionConstraint = new Collection( array(
-            'message' => new NotBlank( array( "message" => "Could not be empty" ) ),
+            $this->container->get( 'translator' )->trans( 'message' ) => new NotBlank(
+                array( "message" => $this->translator->trans( "Could not be empty" ) )
+            ),
         ));
 
         $form = $this->container->get( 'form.factory' )->createBuilder( 'form', null, array(
             'constraints' => $collectionConstraint
-        ))->add( 'message', 'textarea' )
+        ))->add( $this->container->get( 'translator' )->trans( 'message' ), 'textarea' )
             ->getForm();
 
         return $form;
@@ -290,8 +306,8 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     {
         if ($user == null)
         {
-            $name = $data['name'];
-            $email = $data['email'];
+            $name = $data[ $this->container->get( 'translator' )->trans( 'name' )];
+            $email = $data[ $this->container->get( 'translator' )->trans( 'email' )];
         }
         else
         {

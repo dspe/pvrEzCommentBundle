@@ -137,12 +137,16 @@ class CommentController extends Controller
                         $contentId,
                         $this->getRequest()->getSession()->getId()
                     );
-                    $response = new Response( 'Your comment should be moderate before publishing' );
+                    $response = new Response(
+                        $this->container->get( 'translator')->trans( 'Your comment should be moderate before publishing' )
+                    );
                     return $response;
                 }
                 else
                 {
-                    $response = new Response( 'Your comment has been added correctly' );
+                    $response = new Response(
+                        $this->container->get( 'translator')->trans( 'Your comment has been added correctly' )
+                    );
                     return $response;
                 }
             }
@@ -155,7 +159,9 @@ class CommentController extends Controller
                 return $response;
             }
         }
-        return new Response( 'Something goes wrong !', 400 );
+        return new Response(
+            $this->container->get( 'translator')->trans( 'Something goes wrong !' ), 400
+        );
     }
 
     /**
@@ -181,7 +187,9 @@ class CommentController extends Controller
                 // Update status
                 if ( $pvrEzCommentManager->updateStatus( $connection, $commentId ) )
                 {
-                    return new Response( "Comment publish :)" );
+                    return new Response(
+                        $this->container->get( 'translator' )->trans( "Comment publish !" )
+                    );
                 }
             }
             else
@@ -189,12 +197,17 @@ class CommentController extends Controller
                 // Update status
                 if ( $pvrEzCommentManager->updateStatus( $connection, $commentId, $pvrEzCommentManager::COMMENT_REJECTED ) )
                 {
-                    return new Response( "Comment rejected :(" );
+                    return new Response(
+                        $this->container->get( 'translator' )->trans( "Comment rejected !" )
+                    );
                 }
             }
 
         }
-        return new Response( "An unexpected error has occurred. please contact the webmaster :(", 406 );
+        return new Response(
+            $this->container->get( 'translator' )->trans(
+                "An unexpected error has occurred, please contact the webmaster !"
+            ), 406 );
     }
 
 }
