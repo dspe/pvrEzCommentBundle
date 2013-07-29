@@ -142,7 +142,7 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
         $name       = $currentUser->versionInfo->contentInfo->name;
         $email      = $currentUser->email;
         $url        = "";
-        $text       = $data[ $this->container->get( 'translator' )->trans( 'message' )];
+        $text       = $data[ $this->translator->trans( 'message' )];
         $status     = $this->hasModeration() ? self::COMMENT_WAITING : self::COMMENT_ACCEPT;;
         $title      = "";
 
@@ -188,10 +188,10 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
         $sessionKey = $sessionId;
         $ip         = $request->getClientIp();
         $parentCommentId = 0;
-        $name       = $data[ $this->container->get( 'translator' )->trans( 'name' )];
-        $email      = $data[ $this->container->get( 'translator' )->trans( 'email')];
+        $name       = $data[ $this->translator->trans( 'name' )];
+        $email      = $data[ $this->translator->trans( 'email')];
         $url        = "";
-        $text       = $data[ $this->container->get( 'translator' )->trans( 'message' )];
+        $text       = $data[ $this->translator->trans( 'message' )];
         $status     = $this->hasModeration() ? self::COMMENT_WAITING : self::COMMENT_ACCEPT;
         $title      = "";
 
@@ -225,23 +225,23 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     public function createAnonymousForm()
     {
         $collectionConstraint = new Collection( array(
-            $this->container->get( 'translator' )->trans( 'name' ) => new NotBlank(
+            $this->translator->trans( 'name' ) => new NotBlank(
                 array( "message" => $this->translator->trans( "Could not be empty" ) )
             ),
-            $this->container->get( 'translator' )->trans( 'email' ) => new Email(
+            $this->translator->trans( 'email' ) => new Email(
                 array( "message" => $this->translator->trans( "This is not a valid email" ) )
             ),
-            $this->container->get( 'translator' )->trans( 'message' ) => new NotBlank(
+            $this->translator->trans( 'message' ) => new NotBlank(
                 array( "message" => $this->translator->trans( "Could not be empty" ) )
             ),
         ));
 
         $form = $this->container->get( 'form.factory' )->createBuilder( 'form', null, array(
             'constraints' => $collectionConstraint
-        ))->add( $this->container->get( 'translator' )->trans( 'name' ), 'text')
-            ->add( $this->container->get( 'translator' )->trans( 'email' ), 'email')
-            ->add( $this->container->get( 'translator' )->trans( 'message' ), 'textarea' )
-            ->add( $this->container->get( 'translator' )->trans( 'captcha' ), 'captcha',
+        ))->add( $this->translator->trans( 'name' ), 'text')
+            ->add( $this->translator->trans( 'email' ), 'email')
+            ->add( $this->translator->trans( 'message' ), 'textarea' )
+            ->add( $this->translator->trans( 'captcha' ), 'captcha',
                 array( 'as_url' => true, 'reload' => true )
             )
             ->getForm();
@@ -257,14 +257,14 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     public function createUserForm()
     {
         $collectionConstraint = new Collection( array(
-            $this->container->get( 'translator' )->trans( 'message' ) => new NotBlank(
+            $this->translator->trans( 'message' ) => new NotBlank(
                 array( "message" => $this->translator->trans( "Could not be empty" ) )
             ),
         ));
 
         $form = $this->container->get( 'form.factory' )->createBuilder( 'form', null, array(
             'constraints' => $collectionConstraint
-        ))->add( $this->container->get( 'translator' )->trans( 'message' ), 'textarea' )
+        ))->add( $this->translator->trans( 'message' ), 'textarea' )
             ->getForm();
 
         return $form;
@@ -306,8 +306,8 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     {
         if ($user == null)
         {
-            $name = $data[ $this->container->get( 'translator' )->trans( 'name' )];
-            $email = $data[ $this->container->get( 'translator' )->trans( 'email' )];
+            $name = $data[ $this->translator->trans( 'name' )];
+            $email = $data[ $this->translator->trans( 'email' )];
         }
         else
         {
@@ -345,7 +345,7 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
                 $this->container->get( 'templating' )->render( $this->moderate_template, array(
                     "name"  => $name,
                     "email" => $email,
-                    "comment" => $data['message'],
+                    "comment" => $data[ $this->translator->trans( 'message' )],
                     "approve_url" => $approve_url,
                     "reject_url" => $reject_url
                 ))
