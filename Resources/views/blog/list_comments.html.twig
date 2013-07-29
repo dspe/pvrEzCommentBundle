@@ -1,4 +1,4 @@
-<h4>{{ comments|length }} Comments</h4>
+<h4>{{ comments|length }} {% trans %}Comment(s){% endtrans %}</h4>
 
 {{ render( controller( "pvrEzCommentBundle:Comment:getFormComment", {'contentId': contentId })) }}
 

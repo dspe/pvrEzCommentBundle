@@ -1,18 +1,19 @@
 'An unexpected error has occurred, please contact the webmaster !': 'Une erreur inattendue s''est produite, merci de contacter l''administrateur !'
 'Comment publish !': 'Commentaire publié !'
 'Comment rejected !': 'Commentaire rejecté !'
+Comment(s): Commentaire(s)
 'Connection is not a valid %ezdbhandler%': 'La connection n''est pas un object %ezdbhandler%'
 'Could not be empty': 'Ne peut être vide'
 
 "Hello,\n\nA new comment is waiting your approbation:\n\nUser:\n    %name% - %email%\nComment:\n    %comment%\n\n\nApprove comment: %approve_url%\nReject comment: %reject_url%\n\nBest Regards,\nYour devoted server":
-    "\n": "Bonjour,\n\nUn nouveau commentaire attend votre approbation:\n\nUtilisateur:\n    %name% - %email%\nCommentaire:\n    %comment%\n\n\nApprouvé le commentaire: %approve_url%\nRejeté le commentaire: %reject_url%\n\nCordialement,\nVotre dévoué serveur.\n"
+    "\n": "Bonjour,\n\nUn nouveau commentaire attends votre approbation:\n\nUtilisateur:\n    %name% - %email%\nCommentaire:\n    %comment%\n\n\nApprouvé le commentaire: %approve_url%\nRejeté le commentaire: %reject_url%\n\nCordialement,\nVotre serveur dévoué.\n"
 
 'Something goes wrong !': 'Quelque chose se passe mal !'
-'This is not a valid email': 'Ce n''est pas un email valide'
+'This is not a valid email': 'Ce n est pas un email valide'
 'You must be connected to add a comment': 'Vous devez être connecté pour ajouter un commentaire'
 'Your comment has been added correctly': 'Votre commentaire a bien été publié'
 'Your comment should be moderate before publishing': 'Votre commentaire doit être modéré avant publication'
-captcha: 'captcha'
-email: 'email'
-message: 'message'
-name: 'nom'
+captcha: captcha
+email: email
+message: message
+name: nom

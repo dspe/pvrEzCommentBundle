@@ -107,7 +107,7 @@ class CommentController extends Controller
                 // Save data depending of user (anonymous or ezuser)
                 if ( $isAnonymous )
                 {
-                    $pvrEzCommentManager->addAnonymousComment(
+                    $commentId = $pvrEzCommentManager->addAnonymousComment(
                         $connection,
                         $request,
                         $localeService,
@@ -120,7 +120,7 @@ class CommentController extends Controller
                 {
                     $currentUser = $this->getRepository()->getCurrentUser();
 
-                    $pvrEzCommentManager->addComment(
+                    $commentId = $pvrEzCommentManager->addComment(
                         $connection,
                         $request,
                         $currentUser,
@@ -140,7 +140,8 @@ class CommentController extends Controller
                         $form->getData(),
                         $currentUser,
                         $contentId,
-                        $this->getRequest()->getSession()->getId()
+                        $this->getRequest()->getSession()->getId(),
+                        $commentId
                     );
                     $response = new Response(
                         $this->container->get( 'translator')->trans( 'Your comment should be moderate before publishing' )
@@ -177,15 +178,15 @@ class CommentController extends Controller
      * @param $action approve|reject value
      * @return Response
      */
-    public function commentModerateAction( $contentId, $sessionHash, $action )
+    public function commentModerateAction( $contentId, $sessionHash, $action, $commentId )
     {
         $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
         $connection = $this->container->get( 'ezpublish.connection' );
 
         // Check if comment has waiting status..
-        $commentId = $pvrEzCommentManager->canUpdate( $contentId, $sessionHash, $connection );
+        $canUpdate = $pvrEzCommentManager->canUpdate( $contentId, $sessionHash, $connection, $commentId );
 
-        if ( $commentId )
+        if ( $canUpdate )
         {
             if ( $action == "approve" )
             {
