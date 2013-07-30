@@ -1,6 +1,6 @@
 {
     "name": "dspe/pvrezcommentbundle",
-    "description": "pvr EzComment Bundle",
+    "description": "pvr EzComemnt Bundle",
     "keywords": ["symfony2", "comment", "pvr", "ezpublish" ],
     "homepage": "https://github.com/dspe/pvrEzCommentBundle",
     "license": "MIT",
