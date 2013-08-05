@@ -62,7 +62,7 @@ class CommentController extends Controller
         }
         else
         {
-            if ( $this->get('security.context')->getToken()->isAuthenticated() )
+            if ( $this->get( 'security.context' )->getToken()->isAuthenticated() )
             {
                 $form = $pvrEzCommentManager->createUserForm();
             }
@@ -151,14 +151,14 @@ class CommentController extends Controller
                         $commentId
                     );
                     $response = new Response(
-                        $this->container->get( 'translator')->trans( 'Your comment should be moderate before publishing' )
+                        $this->container->get( 'translator' )->trans( 'Your comment should be moderate before publishing' )
                     );
                     return $response;
                 }
                 else
                 {
                     $response = new Response(
-                        $this->container->get( 'translator')->trans( 'Your comment has been added correctly' )
+                        $this->container->get( 'translator' )->trans( 'Your comment has been added correctly' )
                     );
                     return $response;
                 }
@@ -173,7 +173,7 @@ class CommentController extends Controller
             }
         }
         return new Response(
-            $this->container->get( 'translator')->trans( 'Something goes wrong !' ), 400
+            $this->container->get( 'translator' )->trans( 'Something goes wrong !' ), 400
         );
     }
 
@@ -218,9 +218,10 @@ class CommentController extends Controller
 
         }
         return new Response(
-            $this->container->get( 'translator' )->trans(
-                "An unexpected error has occurred, please contact the webmaster !"
-            ), 406 );
+            $this->container->get( 'translator' )
+                ->trans( "An unexpected error has occurred, please contact the webmaster !" ),
+            406
+        );
     }
 
 }
