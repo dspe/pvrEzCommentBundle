@@ -62,13 +62,20 @@ class CommentController extends Controller
         }
         else
         {
-            $form = $pvrEzCommentManager->createUserForm();
+            if ( $this->get('security.context')->getToken()->isAuthenticated() )
+            {
+                $form = $pvrEzCommentManager->createUserForm();
+            }
+            else
+            {
+                $form = null;
+            }
         }
 
         return $this->render(
             'pvrEzCommentBundle:blog:form_comments.html.twig',
             array(
-                'form' => $form->createView(),
+                'form' => $form ? $form->createView() : null,
                 'contentId' => $contentId
             )
         );
