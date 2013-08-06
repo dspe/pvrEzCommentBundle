@@ -56,13 +56,26 @@ class CommentController extends Controller
     public function getFormCommentAction( $contentId )
     {
         $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
+
+        // Case: configuration set to anonymous
         if ( $pvrEzCommentManager->hasAnonymousAccess() )
         {
-            $form = $pvrEzCommentManager->createAnonymousForm();
+            // if user is connected
+            if ( $this->get( 'security.context' )->getToken()->isAuthenticated() )
+            {
+                $form = $pvrEzCommentManager->createUserForm();
+            }
+            else
+            {
+                // else
+                $form = $pvrEzCommentManager->createAnonymousForm();
+            }
         }
+        // Case: Configuration set to connected user
         else
         {
-            if ( $this->get( 'security.context' )->getToken()->isAuthenticated() )
+            // If user has right to add comment
+            if ( $this->getRepository()->hasAccess( 'comment', 'add' ) )
             {
                 $form = $pvrEzCommentManager->createUserForm();
             }
