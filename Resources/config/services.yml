@@ -1,8 +1,11 @@
 parameters:
-    pvr_ezcomment.manager.class: pvr\EzCommentBundle\Comment\pvrEzCommentManager
     pvr_ezcomment.encryption.class: pvr\EzCommentBundle\Comment\pvrEzCommentEncryption
-    ezpublish.api.role.limitation_type.content_section.class: eZ\Publish\Core\Limitation\SectionLimitationType
+    pvr_ezcomment.manager.class: pvr\EzCommentBundle\Comment\pvrEzCommentManager
     pvr_ezcomment.maxage: 60
+    pvr_ezcomment.twig_extension.class: pvr\EzCommentBundle\Twig\pvrEzCommentExtension
+
+    ezpublish.api.role.limitation_type.content_section.class: eZ\Publish\Core\Limitation\SectionLimitationType
+
 
 services:
     pvr_ezcomment.manager:
@@ -27,3 +30,9 @@ services:
         arguments: [@ezpublish.api.persistence_handler]
         tags:
             - {name: ezpublish.limitationType, alias: ContentSection}
+
+    ezpublish.twig.pvrezcomment_extension:
+        class: %pvr_ezcomment.twig_extension.class%
+        arguments: [@pvr_ezcomment.manager, @ezpublish.connection]
+        tags:
+            - { name: twig.extension }

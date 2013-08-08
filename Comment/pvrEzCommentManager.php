@@ -444,6 +444,39 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     }
 
     /**
+     * @param int $contentId
+     * @param EzcDbHandler $handler
+     * @return int
+     */
+    public function getCountComments( $contentId, EzcDbHandler $handler )
+    {
+        $this->checkConnection( $handler );
+
+        $selectQuery = $handler->createSelectQuery();
+
+        $selectQuery->select( '*' )
+            ->from(
+                $handler->quoteTable( 'ezcomment' )
+            )->where(
+                $selectQuery->expr->lAnd(
+                    $selectQuery->expr->eq(
+                        $handler->quoteColumn( 'contentobject_id' ),
+                        $selectQuery->bindValue( $contentId, null, \PDO::PARAM_INT )
+                    ),
+                    $selectQuery->expr->eq(
+                        $handler->quoteColumn( 'status' ),
+                        $selectQuery->bindValue( self::COMMENT_ACCEPT, null, \PDO::PARAM_INT )
+                    )
+                )
+            );
+
+        $statement = $selectQuery->prepare();
+        $statement->execute();
+
+        return $statement->rowCount();
+    }
+
+    /**
      * @return bool
      */
     public function hasAnonymousAccess()

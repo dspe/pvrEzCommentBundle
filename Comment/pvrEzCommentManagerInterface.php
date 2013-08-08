@@ -73,6 +73,8 @@ interface pvrEzCommentManagerInterface
 
     public function updateStatus( $connection, $commentId, $status = self::COMMENT_ACCEPT );
 
+    public function getCountComments( $contentId, EzcDbHandler $handler );
+
     /**
      * @return bool
      */

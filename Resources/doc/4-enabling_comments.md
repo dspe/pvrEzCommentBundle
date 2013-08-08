@@ -17,4 +17,12 @@ On your template, for example article.html.twig, just put this line:
 {{ render_esi( controller( "pvrEzCommentBundle:Comment:getComments", {'contentId': content.id, 'locationId': location.id })) }}
 ```
 
+## Tips
+
+If you would like to display comments count anywhere on you site, just paste this line to your twig template
+
+```jinja
+{{ content.id|getCountComments() }}
+```
+
 That's all :)
