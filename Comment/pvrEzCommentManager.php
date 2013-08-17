@@ -81,11 +81,23 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
      * @return mixed Array or false
      * @throws \Exception
      */
-    public function getComments( $connection, $contentId, $status = self::COMMENT_ACCEPT )
+    public function getComments( $connection, $contentId, $viewParameters = array(), $status = self::COMMENT_ACCEPT )
     {
         $this->checkConnection( $connection );
 
         $selectQuery = $connection->createSelectQuery();
+
+        $column = "created";
+        $sort   = $selectQuery::DESC;
+
+        // Configure how to sort things
+        if ( !empty( $viewParameters ) )
+        {
+            if ( $viewParameters['cSort'] == "author" )
+                $column = "name";
+            if ( $viewParameters['cOrder'] == 'asc' )
+                $sort = $selectQuery::ASC;
+        }
 
         $selectQuery->select(
             $connection->quoteColumn( 'id' ),
@@ -109,7 +121,7 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
                         $selectQuery->bindValue( $status, null, \PDO::PARAM_INT )
                     )
                 )
-            )->orderBy( 'created', $selectQuery::DESC );
+            )->orderBy( $column, $sort );
         $statement = $selectQuery->prepare();
         $statement->execute();
 

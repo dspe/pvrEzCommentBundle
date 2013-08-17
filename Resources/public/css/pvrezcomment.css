@@ -1,6 +1,24 @@
+/**
+ * Comments tools
+ **/
+.comments-tools {
+    float: right;
+}
+.comments-tools .selectSort {
+    width: 168px;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 0;
+    border-color: #dddddd;
+    height: 24px;
+}
+/**
+ * Comments list
+ **/
 .comment-list {
     list-style: none;
     margin: 0;
+    clear: both;
 }
 .comment-list .comment {
     position: relative;

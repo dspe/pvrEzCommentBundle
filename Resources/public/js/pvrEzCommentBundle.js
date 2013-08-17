@@ -3,6 +3,7 @@ YUI().use( "node", "io-base", "io-form", "json-parse", "node-event-simulate", fu
     var formError = Y.one('#formError');
     var formSuccess = Y.one('#formSuccess');
     var submitButton = Y.one( '#commentForm input[name^=AddComment]');
+    var commentSort = Y.one( '#comments-sort' );
 
     form.on( 'submit', function(evt) {
         formError.setHTML('');
@@ -37,6 +38,14 @@ YUI().use( "node", "io-base", "io-form", "json-parse", "node-event-simulate", fu
                 }
             }
         });
+    });
+
+    commentSort.on( 'change', function(evt) {
+        var sort = this.get('value').split("_")[0];
+        var order = this.get('value').split("_")[1];
+        var url = window.full_url;
+
+        window.location.href = url + "/(cSort)/" + sort + "/(cOrder)/" + order + "/?#comments";
     });
 
 });

@@ -26,7 +26,7 @@ class CommentController extends Controller
      * @param $contentId id from current content
      * @return Response
      */
-    public function getCommentsAction( $contentId, $locationId )
+    public function getCommentsAction( Request $request, $contentId, $locationId )
     {
         $response = new Response();
         $response->setMaxAge( $this->container->getParameter( 'pvr_ezcomment.maxage' ) );
@@ -35,7 +35,8 @@ class CommentController extends Controller
         $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
         $connection = $this->container->get( 'ezpublish.connection' );
 
-        $comments = $pvrEzCommentManager->getComments( $connection, $contentId );
+        $viewParameters = $request->get( 'viewParameters' );
+        $comments = $pvrEzCommentManager->getComments( $connection, $contentId, $viewParameters );
 
         return $this->render(
             'pvrEzCommentBundle:blog:list_comments.html.twig',

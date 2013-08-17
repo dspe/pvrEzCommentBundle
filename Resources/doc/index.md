@@ -32,7 +32,7 @@ What is implemented (and not) yet:
  - [ ] Add rss feed to comment by content
  - [ ] Rating comments
  - [ ] Add link to report comment
- - [ ] Add a sort system
+ - [x] Add a sort system
 
 
 Feel free to participate :)

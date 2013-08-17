@@ -1,12 +1,35 @@
+<a name="comments"></a>
 <h4>{{ comments|length }} {% trans %}Comment(s){% endtrans %}</h4>
 
 {{ render( controller( "pvrEzCommentBundle:Comment:getFormComment", {'contentId': contentId })) }}
 
 {% if comments %}
+    {% set sortOrder = ezpublish.viewParameters.cSort ~ "_" ~ ezpublish.viewParameters.cOrder %}
+    <div class="comments-tools">
+        <select id="comments-sort" class="selectSort">
+            <option value="newest_desc" {% if sortOrder == "newest_desc" %}selected="selected"{% endif %}>
+                {% trans %}Newest DESC{% endtrans %}
+            </option>
+            <option value="newest_asc" {% if sortOrder == "newest_asc" %}selected="selected"{% endif %}>
+                {% trans %}Newest ASC{% endtrans %}
+            </option>
+            <option value="author_asc" {% if sortOder == "author_asc" %}selected="selected"{% endif %}>
+                {% trans %}Author DESC{% endtrans %}
+            </option>
+            <option value="author_desc" {% if sortOrder == "author_desc" %}selected="selected"{% endif %}>
+                {% trans %}Author ASC{% endtrans %}
+            </option>
+        </select>
+    </div>
+
+    <script type="text/javascript">
+        window.full_url = "{{ ezpublish.systemUriString }}";
+    </script>
+
     {# comment.user_id  comment.email comment.title #}
     <ul id="comment-list" class="comment-list">
     {% for comment in comments %}
-        <li class="comment" id="comment-{{ comment.id }}">
+        <li class="comment" id="comment-{{ comment.id }}" data-date="{{ comment.created }}">
             <div class="comment-role">
                 <div class="avatar">
                     <img class="user" alt="Avatar" src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;size=48">
@@ -15,7 +38,7 @@
                     <header>
                         <span class="name">{{ comment.name }}</span>
                         <span class="bullet"> • </span>
-                        <a href="#">{{ comment.created|date('d/m/Y') }}</a>
+                        <a href="#" >{{ comment.created|date('d/m/Y') }}</a>
                     </header>
                     <div class="comment-container">
                         {{ comment.text|nl2br }}
