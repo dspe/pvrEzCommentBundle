@@ -23,7 +23,10 @@ class CommentController extends Controller
     /**
      * List comments from a certain contentId
      *
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param $contentId id from current content
+     * @param $locationId
+     * @param array $params
      * @return Response
      */
     public function getCommentsAction( Request $request, $contentId, $locationId, $params = array() )
@@ -44,7 +47,8 @@ class CommentController extends Controller
             $template,
             array(
                 'comments'  => $comments,
-                'contentId' => $contentId
+                'contentId' => $contentId,
+                'params'    => $params
             ),
             $response
         );
@@ -54,6 +58,7 @@ class CommentController extends Controller
      * This function get comment form depends of configuration
      *
      * @param $contentId id of content
+     * @param array $params
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getFormCommentAction( $contentId, $params = array() )
@@ -94,7 +99,8 @@ class CommentController extends Controller
             $template,
             array(
                 'form' => $form ? $form->createView() : null,
-                'contentId' => $contentId
+                'contentId' => $contentId,
+                'params'    => $params
             )
         );
     }
