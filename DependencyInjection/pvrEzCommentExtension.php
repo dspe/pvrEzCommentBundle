@@ -25,6 +25,26 @@ class pvrEzCommentExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        $config = array_merge(
+            array(
+                'anonymous' => false,
+                'moderating' => false,
+                'moderate_mail' => array(
+                    'subject' => "Notify mail",
+                    'from' => "no-reply@example.com",
+                    'to' => "me@example.com",
+                    'template' => "pvrEzCommentBundle:mail:email_moderate.txt.twig"
+                ),
+                'notify_mail' => array(
+                    'enabled' => false,
+                    'subject' => "Notify mail",
+                    'from' => "noreply@example.com",
+                    'template' => "pvrEzCommentbundle:mail:email.txt.twig"
+                ),
+            ),
+            $config
+        );
+
         $container->setParameter( 'pvr_ezcomment.anonymous_access', $config['anonymous'] );
         $container->setParameter( 'pvr_ezcomment.moderating',       $config['moderating'] );
 
