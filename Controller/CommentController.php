@@ -26,7 +26,7 @@ class CommentController extends Controller
      * @param $contentId id from current content
      * @return Response
      */
-    public function getCommentsAction( Request $request, $contentId, $locationId )
+    public function getCommentsAction( Request $request, $contentId, $locationId, $params = array() )
     {
         $response = new Response();
         $response->setMaxAge( $this->container->getParameter( 'pvr_ezcomment.maxage' ) );
@@ -38,8 +38,10 @@ class CommentController extends Controller
         $viewParameters = $request->get( 'viewParameters' );
         $comments = $pvrEzCommentManager->getComments( $connection, $contentId, $viewParameters );
 
+        $template = isset( $params['template'] ) ? $params['template'] : 'pvrEzCommentBundle:blog:list_comments.html.twig';
+
         return $this->render(
-            'pvrEzCommentBundle:blog:list_comments.html.twig',
+            $template,
             array(
                 'comments'  => $comments,
                 'contentId' => $contentId
@@ -54,7 +56,7 @@ class CommentController extends Controller
      * @param $contentId id of content
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getFormCommentAction( $contentId )
+    public function getFormCommentAction( $contentId, $params = array() )
     {
         $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
 
@@ -86,8 +88,10 @@ class CommentController extends Controller
             }
         }
 
+        $template = isset( $params['template'] ) ? $params['template'] : 'pvrEzCommentBundle:blog:form_comments.html.twig';
+
         return $this->render(
-            'pvrEzCommentBundle:blog:form_comments.html.twig',
+            $template,
             array(
                 'form' => $form ? $form->createView() : null,
                 'contentId' => $contentId
