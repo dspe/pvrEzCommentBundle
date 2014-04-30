@@ -4,7 +4,12 @@
 {{ render( controller( "pvrEzCommentBundle:Comment:getFormComment", {'contentId': contentId })) }}
 
 {% if comments %}
-    {% set sortOrder = ezpublish.viewParameters.cSort ~ "_" ~ ezpublish.viewParameters.cOrder %}
+    {% if ezpublish.viewParameters is defined and ezpublish.viewParameters is not empty %}
+        {% set sortOrder = ezpublish.viewParameters.cSort ~ "_" ~ ezpublish.viewParameters.cOrder %}
+    {% else %}
+        {% set sortOrder = "newest_asc" %}
+    {% endif %}
+
     <div class="comments-tools">
         <select id="comments-sort" class="selectSort">
             <option value="newest_desc" {% if sortOrder == "newest_desc" %}selected="selected"{% endif %}>
@@ -13,7 +18,7 @@
             <option value="newest_asc" {% if sortOrder == "newest_asc" %}selected="selected"{% endif %}>
                 {% trans %}Newest ASC{% endtrans %}
             </option>
-            <option value="author_asc" {% if sortOder == "author_asc" %}selected="selected"{% endif %}>
+            <option value="author_asc" {% if sortOrder == "author_asc" %}selected="selected"{% endif %}>
                 {% trans %}Author DESC{% endtrans %}
             </option>
             <option value="author_desc" {% if sortOrder == "author_desc" %}selected="selected"{% endif %}>
