@@ -77,9 +77,9 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
      *
      * @param $connection Get connection to eZ Publish Database
      * @param $contentId Get content Id to fetch comments
+     * @param array $viewParameters
      * @param int $status
      * @return mixed Array or false
-     * @throws \Exception
      */
     public function getComments( $connection, $contentId, $viewParameters = array(), $status = self::COMMENT_ACCEPT )
     {
@@ -507,6 +507,52 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     {
         return $this->moderating;
     }
+
+
+    /**
+     * Get list of last comments
+     *
+     * @param $connection Get connection to eZ Publish Database
+     * @param int $limit
+     *
+     * @return mixed Array or false
+     */
+    public function getLastComments( $connection, $limit = 5 )
+    {
+        $this->checkConnection( $connection );
+
+        /** @var \ezcQuerySelect $selectQuery */
+        $selectQuery = $connection->createSelectQuery();
+
+        $column = "created";
+        $sort   = $selectQuery::DESC;
+
+        $selectQuery->select(
+            $connection->quoteColumn( 'id' ),
+            $connection->quoteColumn( 'created' ),
+            $connection->quoteColumn( 'contentobject_id' ),
+            $connection->quoteColumn( 'user_id' ),
+            $connection->quoteColumn( 'name' ),
+            $connection->quoteColumn( 'email' ),
+            $connection->quoteColumn( 'url' ),
+            $connection->quoteColumn( 'text' ),
+            $connection->quoteColumn( 'title' )
+        )->from(
+                $connection->quoteTable( 'ezcomment' )
+            )->where(
+                $selectQuery->expr->eq(
+                    $connection->quoteColumn( 'status' ),
+                    $selectQuery->bindValue( self::COMMENT_ACCEPT, null, \PDO::PARAM_INT )
+                )
+            )->orderBy( $column, $sort )
+             ->limit( $limit );
+
+        $statement = $selectQuery->prepare();
+        $statement->execute();
+
+        return $statement->fetchAll( \PDO::FETCH_ASSOC );
+    }
+
 
     /**
      * Get ezcontent_language Id
