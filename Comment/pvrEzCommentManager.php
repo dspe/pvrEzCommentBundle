@@ -145,7 +145,9 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     {
         $this->checkConnection( $connection );
 
-        $languageId = $localeService->convertToEz( $request->getLocale() );
+        $languageCode = $localeService->convertToEz( $request->getLocale() );
+        $languageId   = $this->getLanguageId( $connection, $languageCode );
+
         $created    = $modified = \Time();
         $userId     = $currentUser->versionInfo->contentInfo->id;
         $sessionKey = $sessionId;
@@ -196,7 +198,9 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     {
         $this->checkConnection( $connection );
 
-        $languageId = $localeService->convertToEz( $request->getLocale() );
+        $languageCode = $localeService->convertToEz( $request->getLocale() );
+        $languageId   = $this->getLanguageId( $connection, $languageCode );
+
         $created    = $modified = \Time();
         $userId     = self::ANONYMOUS_USER;
         $sessionKey = $sessionId;
@@ -502,5 +506,36 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     public function hasModeration()
     {
         return $this->moderating;
+    }
+
+    /**
+     * Get ezcontent_language Id
+     * @param \eZ\Publish\Core\Persistence\Legacy\EzcDbHandler $connection
+     * @param $languageCode
+     * @return int
+     */
+    protected function getLanguageId( $connection, $languageCode ) {
+        /** @var \ezcQuerySelect $selectQuery */
+        $selectQuery = $connection->createSelectQuery();
+
+        $selectQuery->select(
+            $connection->quoteColumn( 'id' )
+        )->from(
+                $connection->quoteTable( 'ezcontent_language' )
+            )->where(
+                $selectQuery->expr->eq(
+                    $connection->quoteColumn( 'locale' ),
+                    $selectQuery->bindValue( $languageCode, null, \PDO::PARAM_STR )
+                )
+            );
+        $statement = $selectQuery->prepare();
+        $statement->execute();
+
+        $row = $statement->fetch();
+        if( isset($row['id']) ) {
+            return $row['id'];
+        } {
+            return 0;
+        }
     }
 }
