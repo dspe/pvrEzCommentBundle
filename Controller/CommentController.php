@@ -69,7 +69,7 @@ class CommentController extends Controller
         if ( $pvrEzCommentManager->hasAnonymousAccess() )
         {
             // if user is connected
-            if ( $this->get( 'security.context' )->getToken()->isAuthenticated() )
+            if( $this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') )
             {
                 $form = $pvrEzCommentManager->createUserForm();
             }
