@@ -40,12 +40,14 @@ YUI().use( "node", "io-base", "io-form", "json-parse", "node-event-simulate", fu
         });
     });
 
-    commentSort.on( 'change', function(evt) {
-        var sort = this.get('value').split("_")[0];
-        var order = this.get('value').split("_")[1];
-        var url = window.full_url;
+    if( commentSort && commentSort.length){
+        commentSort.on( 'change', function(evt) {
+            var sort = this.get('value').split("_")[0];
+            var order = this.get('value').split("_")[1];
+            var url = window.full_url;
 
-        window.location.href = url + "/(cSort)/" + sort + "/(cOrder)/" + order + "/?#comments";
-    });
+            window.location.href = url + "/(cSort)/" + sort + "/(cOrder)/" + order + "/?#comments";
+        });
+    }
 
 });
