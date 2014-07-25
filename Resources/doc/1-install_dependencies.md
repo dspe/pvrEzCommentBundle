@@ -7,10 +7,6 @@ In order to work fully, this bundle need to have some dependencies:
 
 ## a) Install eZ Comment on Legacy Kernel
 
-### Manualy
-
-For this step, please read full [installation documentation](https://github.com/ezsystems/ezcomments/blob/master/packages/ezcomments_extension/ezextension/ezcomments/doc/INSTALL)
-
 ### Via composer
 
 If you use eZ Publish 5.3 or last community version ( >= 2014.05 )
@@ -22,7 +18,7 @@ Else
 ```
 php composer.phar require --prefer-dist dspe/pvrezcommentbundle:v0.1
 ```
-
+For this step, please read full [installation documentation](https://github.com/ezsystems/ezcomments/blob/master/packages/ezcomments_extension/ezextension/ezcomments/doc/INSTALL)
 
 ## b) Configure your users roles
 
@@ -32,3 +28,4 @@ If you would like that ezuser could post some comment, you have to add this poli
 ### Continue to the next step !
 
 When you're done. Continue by setting up the bundle: [Step 2: Setting up the bundle](2-settings_up_the_bundle.md)
+

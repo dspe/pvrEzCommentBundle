@@ -1,18 +1,7 @@
+
 # Step 2: Setting up the bundle
 
-## a) Install pvrEzCommentBundle
-
-You can accomplish this several ways, depending on your personal preference.
-
-**Using composer.json**
-
-Add the following to the "require" section of your ```composer.json``` file.
-
-```
-    "dspe/pvrEzCommentBundle": "dev-master"
-```
-
-## b) Enable the Bundle
+## a) Enable the Bundle
 
 Enable the bundle in the EzpublishKernel:
 
@@ -27,6 +16,21 @@ public function registerBundles()
         new pvr\EzCommentBundle\pvrEzCommentBundle(),
     );
 }
+```
+
+## b) Update your config.yml
+
+In order to use stylesheets provide by the bundle, you have to update:
+
+```yaml
+assetic:
+    bundles:        [ pvrEzCommentBundle ]
+```
+
+and add configuration for captcha:
+
+```yaml
+gregwar_captcha: ~
 ```
 
 ## c) Register parameter: secret
