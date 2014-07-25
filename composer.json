@@ -12,7 +12,8 @@
     ],
     "require": {
         "ezsystems/ezpublish-kernel": "*",
-        "ezsystems/ezcomments-ls-extension": "*"
+        "ezsystems/ezcomments-ls-extension": "*",
+        "gregwar/captcha-bundle": "dev-master"
     },
     "minimum-stability": "dev",
     "autoload": {
