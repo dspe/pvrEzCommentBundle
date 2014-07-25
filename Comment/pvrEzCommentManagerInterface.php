@@ -23,10 +23,7 @@ use Symfony\Component\Form\Form;
 
 interface pvrEzCommentManagerInterface
 {
-    public function __construct( $anonymous_access = false, $moderating = false,
-                                 $moderate_subject, $moderate_from, $moderate_to, $moderate_template,
-                                 $isNotify,
-                                 ContainerInterface $container );
+    public function __construct( $config, ContainerInterface $container );
 
     /**
      * @param $connection Get connection to eZ Publish Database

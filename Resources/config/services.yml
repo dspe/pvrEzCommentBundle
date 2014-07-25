@@ -11,13 +11,7 @@ services:
     pvr_ezcomment.manager:
         class: %pvr_ezcomment.manager.class%
         arguments:
-            - %pvr_ezcomment.anonymous_access%
-            - %pvr_ezcomment.moderating%
-            - %pvr_ezcomment.moderate_subject%
-            - %pvr_ezcomment.moderate_from%
-            - %pvr_ezcomment.moderate_to%
-            - %pvr_ezcomment.moderate_template%
-            - %pvr_ezcomment.notify_enabled%
+            - %pvr_ezcomment.config%
             - @service_container
 
     pvr_ezcomment.encryption:

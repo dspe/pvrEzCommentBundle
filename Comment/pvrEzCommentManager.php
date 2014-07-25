@@ -39,17 +39,15 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
     protected $container;
     protected $translator;
 
-    public function __construct( $anonymous_access = false, $moderating = false,
-                                 $moderate_subject, $moderate_from, $moderate_to, $moderate_template,
-                                 $isNotify, ContainerInterface $container )
-    {
-        $this->anonymous_access     = $anonymous_access;
-        $this->moderating           = $moderating;
-        $this->moderate_subject     = $moderate_subject;
-        $this->moderate_from        = $moderate_from;
-        $this->moderate_to          = $moderate_to;
-        $this->moderate_template    = $moderate_template;
-        $this->isNotify             = $isNotify;
+    public function __construct( $config, ContainerInterface $container )
+    {   
+        $this->anonymous_access     = $config["anonymous"];
+        $this->moderating           = $config["moderating"];
+        $this->moderate_subject     = $config["moderate_subject"];
+        $this->moderate_from        = $config["moderate_from"];
+        $this->moderate_to          = $config["moderate_to"];
+        $this->moderate_template    = $config["moderate_template"];
+        $this->isNotify             = $config["notify_enabled"];
         $this->container            = $container;
         $this->translator           = $this->container->get( 'translator' );
     }

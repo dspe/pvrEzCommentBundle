@@ -45,14 +45,14 @@ class pvrEzCommentExtension extends Extension
             $config
         );
 
-        $container->setParameter( 'pvr_ezcomment.anonymous_access', $config['anonymous'] );
-        $container->setParameter( 'pvr_ezcomment.moderating',       $config['moderating'] );
-
-        $container->setParameter( 'pvr_ezcomment.moderate_subject',  $config['moderate_mail']['subject'] );
-        $container->setParameter( 'pvr_ezcomment.moderate_from',     $config['moderate_mail']['from'] );
-        $container->setParameter( 'pvr_ezcomment.moderate_to' ,      $config['moderate_mail']['to'] );
-        $container->setParameter( 'pvr_ezcomment.moderate_template', $config['moderate_mail']['template'] );
-
-        $container->setParameter( 'pvr_ezcomment.notify_enabled',   $config['notify_mail']['enabled'] );
+        $container->setParameter( 'pvr_ezcomment.config',  array( 
+            "anonymous"         => $config['anonymous'],
+            "moderating"        => $config['moderating'],
+            "moderate_subject"  => $config['moderate_mail']['subject'],
+            "moderate_from"     => $config['moderate_mail']['from'],
+            "moderate_to"       => $config['moderate_mail']['to'],
+            "moderate_template" => $config['moderate_mail']['template'],
+            "notify_enabled"    => $config['notify_mail']['enabled']
+        ));
     }
 }
