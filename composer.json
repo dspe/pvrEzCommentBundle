@@ -11,7 +11,8 @@
         }
     ],
     "require": {
-        "ezsystems/ezpublish-kernel": "*"
+        "ezsystems/ezpublish-kernel": "5.3.* | dev-master",
+        "ezsystems/ezcomments-ls-extension": ">=5.3.*
     },
     "minimum-stability": "dev",
     "autoload": {
