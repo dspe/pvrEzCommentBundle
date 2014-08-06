@@ -309,13 +309,13 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
 
             $errors[$key] = $template;
         }
-        if ($form->hasChildren()) {
-            foreach ($form->getChildren() as $child) {
-                if (!$child->isValid()) {
-                    $errors[$child->getName()] = $this->getErrorMessages($child);
-                }
+        foreach ($form->all() as $key => $child) {
+            /** @var $child Form */
+            if ($err = $this->getErrorMessages($child)) {
+                $errors[$key] = $err;
             }
         }
+        
         return $errors;
     }
 
