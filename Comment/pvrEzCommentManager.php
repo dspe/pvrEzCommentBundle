@@ -322,7 +322,7 @@ class pvrEzCommentManager implements pvrEzCommentManagerInterface
      */
     public function sendMessage( $data, $user, $contentId, $sessionId, $commentId )
     {
-        if ($user == null)
+        if ($user === null)
         {
             $name = $data[ $this->translator->trans( 'name' )];
             $email = $data[ $this->translator->trans( 'email' )];
