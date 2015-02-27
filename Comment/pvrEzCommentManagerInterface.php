@@ -81,3 +81,4 @@ interface pvrEzCommentManagerInterface
      */
     public function hasModeration();
 }
+

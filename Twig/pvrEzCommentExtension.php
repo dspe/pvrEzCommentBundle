@@ -33,3 +33,4 @@ class pvrEzCommentExtension extends \Twig_Extension
         return 'pvrezcomment_extension';
     }
 }
+

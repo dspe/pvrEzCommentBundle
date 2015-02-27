@@ -15,3 +15,4 @@ pvrezcomment_moderation:
         contentId: \d+
         action: approve|reject
         commentId: \d+
+

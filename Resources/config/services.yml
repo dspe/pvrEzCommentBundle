@@ -30,3 +30,4 @@ services:
         arguments: [@pvr_ezcomment.manager, @ezpublish.connection]
         tags:
             - { name: twig.extension }
+
