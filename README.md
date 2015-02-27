@@ -1,3 +1,5 @@
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/1b60d35e-e192-44ff-a5cc-1e529c1217d0/big.png)](https://insight.sensiolabs.com/projects/1b60d35e-e192-44ff-a5cc-1e529c1217d0)
+
 # pvrEzCommentBundle
 
 The ```pvrEzCommentBundle``` adds support for comments for ezpublish 5. This is an evolution from original extension
