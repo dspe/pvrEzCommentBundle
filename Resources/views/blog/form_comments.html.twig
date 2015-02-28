@@ -3,7 +3,7 @@
 <div id="formError"></div>
 <div id="formSuccess"></div>
 
-{% form_theme form with 'pvrEzCommentBundle:form:captcha.html.twig' %}
+{% form_theme form with 'PvrEzCommentBundle:form:captcha.html.twig' %}
 
 <form id="commentForm" action="{{ path( 'pvrezcomment_add', { 'contentId': contentId } ) }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
@@ -13,7 +13,7 @@
     </div>
 </form>
 
-{% javascripts "@pvrEzCommentBundle/Resources/public/js/pvrEzCommentBundle.js" %}
+{% javascripts "@PvrEzCommentBundle/Resources/public/js/pvrEzCommentBundle.js" %}
     <script type="text/javascript">
         window.url = "{{ path( 'pvrezcomment_add', { 'contentId': contentId }) }}";
     </script>

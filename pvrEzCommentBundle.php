@@ -6,5 +6,5 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class PvrEzCommentBundle extends Bundle
 {
-    protected $name = 'pvrEzCommentBundle';
+    protected $name = 'PvrEzCommentBundle';
 }

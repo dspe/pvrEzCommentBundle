@@ -35,7 +35,7 @@ class CommentController extends Controller
         $data = $this->container->get( 'pvr_ezcomment.service' )->getComments( $locationId, $contentId );
         $data += array( 'params' => $params );
 
-        $template = isset( $params['template'] ) ? $params['template'] : 'pvrEzCommentBundle:blog:list_comments.html.twig';
+        $template = isset( $params['template'] ) ? $params['template'] : 'PvrEzCommentBundle:blog:list_comments.html.twig';
 
         return $this->render( $template, $data, $response );
     }
@@ -51,7 +51,7 @@ class CommentController extends Controller
     {
         $form = $this->container->get( 'pvr_ezcomment.service' )->generateForm();
 
-        $template = isset( $params['template'] ) ? $params['template'] : 'pvrEzCommentBundle:blog:form_comments.html.twig';
+        $template = isset( $params['template'] ) ? $params['template'] : 'PvrEzCommentBundle:blog:form_comments.html.twig';
 
         return $this->render(
             $template,
