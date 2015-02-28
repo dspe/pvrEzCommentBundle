@@ -11,12 +11,15 @@
 
 namespace pvr\EzCommentBundle\Comment;
 
+use eZ\Publish\Core\MVC\Symfony\Routing\ChainRouter;
 use eZ\Publish\Core\Persistence\Legacy\EzcDbHandler;
 use eZ\Publish\Core\Repository\Values\User\User as EzUser;
 use eZ\Publish\Core\MVC\Symfony\Locale\LocaleConverter;
 use pvr\EzCommentBundle\Comment\PvrEzCommentManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -36,10 +39,15 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
     protected $moderate_to;
     protected $moderate_template;
     protected $isNotify;
-    protected $container;
+    /** @var  $translator \Symfony\Component\Translation\Translator */
     protected $translator;
+    /** @var $formFactory  \Symfony\Component\Form\FormFactory */
+    protected $formFactory;
+    protected $templating;
+    protected $mailer;
+    protected $encryption;
 
-    public function __construct( $config, ContainerInterface $container )
+    public function __construct( $config, \Swift_Mailer $mailer, PvrEzCommentEncryption $encryption, ChainRouter   $router  )
     {   
         $this->anonymous_access     = $config["anonymous"];
         $this->moderating           = $config["moderating"];
@@ -48,8 +56,30 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
         $this->moderate_to          = $config["moderate_to"];
         $this->moderate_template    = $config["moderate_template"];
         $this->isNotify             = $config["notify_enabled"];
-        $this->container            = $container;
-        $this->translator           = $this->container->get( 'translator' );
+        $this->mailer               = $mailer;
+        $this->encryption           = $encryption;
+        $this->router               = $router;
+    }
+
+    /**
+     * @param Translator $translator
+     */
+    public function setTranslator( Translator $translator )
+    {
+        $this->translator = $translator;
+    }
+
+    /**
+     * @param FormFactory $form
+     */
+    public function setFormFactory( FormFactory $form )
+    {
+        $this->formFactory = $form;
+    }
+
+    public function setTemplating( DelegatingEngine $templating )
+    {
+        $this->templating = $templating;
     }
 
     /**
@@ -244,7 +274,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             ),
         ));
 
-        $form = $this->container->get( 'form.factory' )->createBuilder( 'form', null, array(
+        $form = $this->formFactory->createBuilder( 'form', null, array(
             'constraints' => $collectionConstraint
         ))->add( $this->translator->trans( 'name' ), 'text')
             ->add( $this->translator->trans( 'email' ), 'email')
@@ -270,7 +300,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             ),
         ));
 
-        $form = $this->container->get( 'form.factory' )->createBuilder( 'form', null, array(
+        $form = $this->formFactory->createBuilder( 'form', null, array(
             'constraints' => $collectionConstraint
         ))->add( $this->translator->trans( 'message' ), 'textarea' )
             ->getForm();
@@ -323,10 +353,9 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             $email  = $user->email;
         }
 
-        $encrypt_service = $this->container->get( 'pvr_ezcomment.encryption' );
-        $encodeSession = $encrypt_service->encode( $sessionId );
+        $encodeSession = $this->encryption->encode( $sessionId );
 
-        $approve_url = $this->container->get( 'router' )->generate(
+        $approve_url = $this->router->generate(
             'pvrezcomment_moderation',
             array(
                 'contentId' => $contentId,
@@ -336,7 +365,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             ),
             true
         );
-        $reject_url = $this->container->get( 'router' )->generate(
+        $reject_url = $this->router->generate(
             'pvrezcomment_moderation',
             array(
                 'contentId' => $contentId,
@@ -352,7 +381,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             ->setFrom( $this->moderate_from )
             ->setTo( $this->moderate_to )
             ->setBody(
-                $this->container->get( 'templating' )->render( $this->moderate_template, array(
+                $this->templating->render( $this->moderate_template, array(
                     "name"  => $name,
                     "email" => $email,
                     "comment" => $data[ $this->translator->trans( 'message' )],
@@ -360,7 +389,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
                     "reject_url" => $reject_url
                 ))
             );
-        $this->container->get( 'mailer' )->send( $message );
+        $this->mailer->send( $message );
     }
 
     /**
@@ -375,8 +404,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
     {
         $this->checkConnection( $connection );
 
-        $encrypt_service = $this->container->get( 'pvr_ezcomment.encryption' );
-        $session_id = $encrypt_service->decode( $sessionHash );
+        $session_id = $this->encryption->decode( $sessionHash );
 
         $selectQuery = $connection->createSelectQuery();
 
