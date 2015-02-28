@@ -1,8 +1,8 @@
 parameters:
-    pvr_ezcomment.encryption.class: pvr\EzCommentBundle\Comment\pvrEzCommentEncryption
-    pvr_ezcomment.manager.class: pvr\EzCommentBundle\Comment\pvrEzCommentManager
+    pvr_ezcomment.encryption.class: pvr\EzCommentBundle\Comment\PvrEzCommentEncryption
+    pvr_ezcomment.manager.class: pvr\EzCommentBundle\Comment\PvrEzCommentManager
     pvr_ezcomment.maxage: 60
-    pvr_ezcomment.twig_extension.class: pvr\EzCommentBundle\Twig\pvrEzCommentExtension
+    pvr_ezcomment.twig_extension.class: pvr\EzCommentBundle\Twig\PvrEzCommentExtension
 
     ezpublish.api.role.limitation_type.content_section.class: eZ\Publish\Core\Limitation\SectionLimitationType
 

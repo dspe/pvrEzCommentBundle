@@ -2,7 +2,7 @@
 
 namespace pvr\EzCommentBundle\Comment;
 
-Interface pvrEzCommentEncryptionInterface
+Interface PvrEzCommentEncryptionInterface
 {
 
     public function __construct( $secret );

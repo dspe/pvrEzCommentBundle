@@ -16,11 +16,10 @@ use eZ\Publish\Core\Repository\Values\User\User as EzUser;
 use eZ\Publish\Core\MVC\Symfony\Locale\LocaleConverter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Form\Form;
 
-interface pvrEzCommentManagerInterface
+interface PvrEzCommentManagerInterface
 {
     public function __construct( $config, ContainerInterface $container );
 

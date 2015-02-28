@@ -14,7 +14,7 @@ namespace pvr\EzCommentBundle\Comment;
 use eZ\Publish\Core\Persistence\Legacy\EzcDbHandler;
 use eZ\Publish\Core\Repository\Values\User\User as EzUser;
 use eZ\Publish\Core\MVC\Symfony\Locale\LocaleConverter;
-use pvr\EzCommentBundle\Comment\pvrEzCommentManagerInterface;
+use pvr\EzCommentBundle\Comment\PvrEzCommentManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Email;
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Form\Form;
 
-class pvrEzCommentManager implements pvrEzCommentManagerInterface
+class PvrEzCommentManager implements PvrEzCommentManagerInterface
 {
     const COMMENT_WAITING   = 0;
     const COMMENT_ACCEPT    = 1;

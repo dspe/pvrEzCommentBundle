@@ -11,9 +11,9 @@
 
 namespace pvr\EzCommentBundle\Comment;
 
-use pvr\EzCommentBundle\Comment\pvrEzCommentEncryptionInterface;
+use pvr\EzCommentBundle\Comment\PvrEzCommentEncryptionInterface;
 
-class pvrEzCommentEncryption implements pvrEzCommentEncryptionInterface
+class PvrEzCommentEncryption implements pvrEzCommentEncryptionInterface
 {
     /**
      * @var Contains the secret key
@@ -25,7 +25,7 @@ class pvrEzCommentEncryption implements pvrEzCommentEncryptionInterface
      */
     public function __construct( $secret )
     {
-        $this->secretKey = $secret;
+        $this->secretKey = substr( $secret, 0, 32 );
     }
 
     /**

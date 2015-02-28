@@ -3,14 +3,14 @@
 namespace pvr\EzCommentBundle\Twig;
 
 use eZ\Publish\Core\Persistence\Legacy\EzcDbHandler;
-use pvr\EzCommentBundle\Comment\pvrEzCommentManager;
+use pvr\EzCommentBundle\Comment\PvrEzCommentManager;
 
-class pvrEzCommentExtension extends \Twig_Extension
+class PvrEzCommentExtension extends \Twig_Extension
 {
     protected $commentManager;
     protected $handler;
 
-    public function __construct( pvrEzCommentManager $commentManager, EzcDbHandler $handler )
+    public function __construct( PvrEzCommentManager $commentManager, EzcDbHandler $handler )
     {
         $this->commentManager = $commentManager;
         $this->handler = $handler;
