@@ -14,8 +14,8 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "ezsystems/ezpublish-kernel": "~2014.11",
-        "ezsystems/ezcomments-ls-extension": "dev-master",
+        "ezsystems/ezpublish-kernel": ">=2014.11",
+        "ezsystems/ezcomments-ls-extension": ">=5.3.0",
         "gregwar/captcha-bundle": "~2.0"
     },
     "autoload": {
