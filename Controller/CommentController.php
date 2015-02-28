@@ -33,23 +33,12 @@ class CommentController extends Controller
         $response->setMaxAge( $this->container->getParameter( 'pvr_ezcomment.maxage' ) );
         $response->headers->set( 'X-Location-Id', $locationId );
 
-        $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
-        $connection = $this->container->get( 'ezpublish.connection' );
-
-        $viewParameters = $request->get( 'viewParameters' );
-        $comments = $pvrEzCommentManager->getComments( $connection, $contentId, $viewParameters );
+        $data = $this->container->get( 'pvr_ezcomment.service' )->getComments( $locationId, $contentId );
+        $data += array( 'params' => $params );
 
         $template = isset( $params['template'] ) ? $params['template'] : 'pvrEzCommentBundle:blog:list_comments.html.twig';
 
-        return $this->render(
-            $template,
-            array(
-                'comments'  => $comments,
-                'contentId' => $contentId,
-                'params'    => $params
-            ),
-            $response
-        );
+        return $this->render( $template, $data, $response );
     }
 
     /**
@@ -61,35 +50,7 @@ class CommentController extends Controller
      */
     public function getFormCommentAction( $contentId, $params = array() )
     {
-        $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
-
-        // Case: configuration set to anonymous
-        if ( $pvrEzCommentManager->hasAnonymousAccess() )
-        {
-            // if user is connected
-            if( $this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') )
-            {
-                $form = $pvrEzCommentManager->createUserForm();
-            }
-            else
-            {
-                // else
-                $form = $pvrEzCommentManager->createAnonymousForm();
-            }
-        }
-        // Case: Configuration set to connected user
-        else
-        {
-            // If user has right to add comment
-            if ( $this->getRepository()->hasAccess( 'comment', 'add' ) )
-            {
-                $form = $pvrEzCommentManager->createUserForm();
-            }
-            else
-            {
-                $form = null;
-            }
-        }
+        $form = $this->container->get( 'pvr_ezcomment.service' )->generateForm();
 
         $template = isset( $params['template'] ) ? $params['template'] : 'pvrEzCommentBundle:blog:form_comments.html.twig';
 
@@ -112,87 +73,8 @@ class CommentController extends Controller
      */
     public function addCommentAction( Request $request, $contentId )
     {
-        $pvrEzCommentManager = $this->container->get( 'pvr_ezcomment.manager' );
-        if ( $request->isXmlHttpRequest() )
-        {
-            // Check if user is anonymous or not and generate correct form
-            $isAnonymous = false;
-            if ( $pvrEzCommentManager->hasAnonymousAccess() )
-            {
-                $form = $pvrEzCommentManager->createAnonymousForm();
-                $isAnonymous = true;
-            }
-            else
-            {
-                $form = $pvrEzCommentManager->createUserForm();
-            }
-
-            $form->bind( $request );
-            if ( $form->isValid() )
-            {
-                $connection = $this->container->get( 'ezpublish.connection' );
-                $localeService = $this->container->get( 'ezpublish.locale.converter' );
-
-                // Save data depending of user (anonymous or ezuser)
-                if ( $isAnonymous )
-                {
-                    $commentId = $pvrEzCommentManager->addAnonymousComment(
-                        $connection,
-                        $request,
-                        $localeService,
-                        $form->getData(),
-                        $contentId,
-                        $this->getRequest()->getSession()->getId()
-                    );
-                }
-                else
-                {
-                    $currentUser = $this->getRepository()->getCurrentUser();
-
-                    $commentId = $pvrEzCommentManager->addComment(
-                        $connection,
-                        $request,
-                        $currentUser,
-                        $localeService,
-                        $form->getData(),
-                        $contentId,
-                        $this->getRequest()->getSession()->getId()
-                    );
-                }
-
-                // Check if you need to moderate comment or not
-                if ( $pvrEzCommentManager->hasModeration() )
-                {
-                    if (!isset( $currentUser )) $currentUser = null;
-
-                    $pvrEzCommentManager->sendMessage(
-                        $form->getData(),
-                        $currentUser,
-                        $contentId,
-                        $this->getRequest()->getSession()->getId(),
-                        $commentId
-                    );
-                    $response = new Response(
-                        $this->container->get( 'translator' )->trans( 'Your comment should be moderate before publishing' )
-                    );
-                    return $response;
-                }
-                else
-                {
-                    $response = new Response(
-                        $this->container->get( 'translator' )->trans( 'Your comment has been added correctly' )
-                    );
-                    return $response;
-                }
-            }
-            else
-            {
-                $errors = $pvrEzCommentManager->getErrorMessages( $form );
-
-                $response = new Response( json_encode( $errors ), 406 );
-                $response->headers->set( 'Content-Type', 'application/json' );
-                return $response;
-            }
+        if ( $request->isXmlHttpRequest() ) {
+            return $this->container->get( 'pvr_ezcomment.service' )->addComments( $contentId );
         }
         return new Response(
             $this->container->get( 'translator' )->trans( 'Something goes wrong !' ), 400
