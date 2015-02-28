@@ -13,9 +13,10 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "ezsystems/ezpublish-kernel": "@dev",
-        "ezsystems/ezcomments-ls-extension": "@dev",
-        "gregwar/captcha-bundle": "@dev"
+        "php": ">=5.4",
+        "ezsystems/ezpublish-kernel": "~2014.11",
+        "ezsystems/ezcomments-ls-extension": "dev-master",
+        "gregwar/captcha-bundle": "~2.0"
     },
     "autoload": {
         "psr-0": {
