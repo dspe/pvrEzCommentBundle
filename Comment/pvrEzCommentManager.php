@@ -144,37 +144,27 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
         $this->checkConnection( $connection );
 
         $languageCode = $localeService->convertToEz( $request->getLocale() );
-        $languageId   = $this->getLanguageId( $connection, $languageCode );
 
         $created    = $modified = \Time();
-        $userId     = $currentUser->versionInfo->contentInfo->id;
-        $sessionKey = $sessionId;
-        $ip         = $request->getClientIp();
-        $parentCommentId = 0;
-        $name       = $currentUser->versionInfo->contentInfo->name;
-        $email      = $currentUser->email;
-        $url        = "";
-        $text       = $data[ $this->translator->trans( 'message' )];
-        $status     = $this->hasModeration() ? self::COMMENT_WAITING : self::COMMENT_ACCEPT;;
-        $title      = "";
+        $status     = $this->hasModeration() ? self::COMMENT_WAITING : self::COMMENT_ACCEPT;
 
         $selectQuery = $connection->createInsertQuery();
 
         $selectQuery->insertInto( 'ezcomment' )
-            ->set( 'language_id',       $selectQuery->bindValue( $languageId ))
+            ->set( 'language_id',       $selectQuery->bindValue( $this->getLanguageId( $connection, $languageCode ) ))
             ->set( 'created',           $selectQuery->bindValue( $created ))
             ->set( 'modified',          $selectQuery->bindValue( $modified ))
-            ->set( 'user_id',           $selectQuery->bindValue( $userId ))
-            ->set( 'session_key',       $selectQuery->bindValue( $sessionKey ))
-            ->set( 'ip',                $selectQuery->bindValue( $ip ))
+            ->set( 'user_id',           $selectQuery->bindValue( $currentUser->versionInfo->contentInfo->id ))
+            ->set( 'session_key',       $selectQuery->bindValue( $sessionId ))
+            ->set( 'ip',                $selectQuery->bindValue( $request->getClientIp() ))
             ->set( 'contentobject_id',  $selectQuery->bindValue( $contentId ))
-            ->set( 'parent_comment_id', $selectQuery->bindValue( $parentCommentId ))
-            ->set( 'name',              $selectQuery->bindValue( $name ))
-            ->set( 'email',             $selectQuery->bindValue( $email ))
-            ->set( 'url',               $selectQuery->bindValue( $url ))
-            ->set( 'text',              $selectQuery->bindValue( $text ))
+            ->set( 'parent_comment_id', $selectQuery->bindValue( 0 ))
+            ->set( 'name',              $selectQuery->bindValue( $currentUser->versionInfo->contentInfo->name ))
+            ->set( 'email',             $selectQuery->bindValue( $currentUser->email ))
+            ->set( 'url',               $selectQuery->bindValue( "" ))
+            ->set( 'text',              $selectQuery->bindValue( $data[ $this->translator->trans( 'message' )] ))
             ->set( 'status',            $selectQuery->bindValue( $status ))
-            ->set( 'title',             $selectQuery->bindValue( $title ));
+            ->set( 'title',             $selectQuery->bindValue( "" ));
         $statement = $selectQuery->prepare();
         $statement->execute();
 
