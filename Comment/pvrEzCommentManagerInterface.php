@@ -15,8 +15,6 @@ use eZ\Publish\Core\MVC\Symfony\Routing\ChainRouter;
 use eZ\Publish\Core\Persistence\Legacy\EzcDbHandler;
 use eZ\Publish\Core\Repository\Values\User\User as EzUser;
 use eZ\Publish\Core\MVC\Symfony\Locale\LocaleConverter;
-use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Form;
 

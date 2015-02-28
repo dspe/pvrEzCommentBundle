@@ -14,7 +14,6 @@ namespace pvr\EzCommentBundle\Controller;
 use eZ\Bundle\EzPublishCoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\Collection;
 
 class CommentController extends Controller
 {
@@ -27,7 +26,7 @@ class CommentController extends Controller
      * @param array $params
      * @return Response
      */
-    public function getCommentsAction( Request $request, $contentId, $locationId, $params = array() )
+    public function getCommentsAction( $contentId, $locationId, $params = array() )
     {
         $response = new Response();
         $response->setMaxAge( $this->container->getParameter( 'pvr_ezcomment.maxage' ) );
