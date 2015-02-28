@@ -33,6 +33,7 @@ What is implemented (and not) yet:
  - [ ] Rating comments
  - [ ] Add link to report comment
  - [x] Add a sort system
+ - [x] Support eZ 5.4 and Symfony >= 2.6
 
 
 Feel free to participate :)

@@ -14,7 +14,7 @@ public function registerBundles()
     $bundles = array(
         // ...
         new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
-        new pvr\EzCommentBundle\pvrEzCommentBundle(),
+        new pvr\EzCommentBundle\PvrEzCommentBundle(),
     );
 }
 ```
@@ -25,7 +25,7 @@ In order to use stylesheets provide by the bundle, you have to update:
 
 ```yaml
 assetic:
-    bundles:        [ pvrEzCommentBundle ]
+    bundles:        [ PvrEzCommentBundle ]
 ```
 
 and add configuration for captcha:

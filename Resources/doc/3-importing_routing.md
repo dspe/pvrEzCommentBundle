@@ -4,7 +4,7 @@ We recommend to add this routing to your ```routing.yml``` file
 
 ```
 pvr_ezcomment_routing:
-    resource: "@pvrEzCommentBundle/Resources/config/routing.yml"
+    resource: "@PvrEzCommentBundle/Resources/config/routing.yml"
 ```
 
 You have to add configuration for CaptchaBundle. Put this line to your ```config.yml```
@@ -13,7 +13,7 @@ You have to add configuration for CaptchaBundle. Put this line to your ```config
 gregwar_captcha: ~
 ```
 
-```pvrEzCommentBundle``` don't need configuration. It could works without configuration. But if you need
+```PvrEzCommentBundle``` don't need configuration. It could works without configuration. But if you need
 to customize it, this is a full configuration list.
 
 ```yaml
@@ -24,12 +24,12 @@ pvr_ez_comment:
         subject:  "Notify mail"
         from:     "no-reply@example.com"
         to:       "me@example.com"
-        template: "pvrEzCommentBundle:mail:email_moderate.txt.twig"
+        template: "PvrEzCommentBundle:mail:email_moderate.txt.twig"
     notify_mail:
         enabled:  false
         subject:  "Notify mail"
         from:     "noreply@example.com"
-        template: "pvrEzCommentbundle:mail:email.txt.twig"
+        template: "PvrEzCommentbundle:mail:email.txt.twig"
 ```
 
 **Description**

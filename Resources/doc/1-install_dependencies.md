@@ -9,14 +9,11 @@ In order to work fully, this bundle need to have some dependencies:
 
 ### Via composer
 
-If you use eZ Publish 5.3 or last community version ( >= 2014.05 )
+If you use eZ Publish 5.4 or last community version ( >= 2014.11 )
 ```
-php composer.phar require --prefer-dist dspe/pvrezcommentbundle:dev-master
+php composer.phar require --prefer-dist dspe/pvrezcommentbundle:v0.2
 ```
 
-Else
-```
-php composer.phar require --prefer-dist dspe/pvrezcommentbundle:v0.1
 ```
 For this step, please read full [installation documentation](https://github.com/ezsystems/ezcomments/blob/master/packages/ezcomments_extension/ezextension/ezcomments/doc/INSTALL)
 
