@@ -13,6 +13,11 @@ If you are using old version of eZ Publish, this will probably not work and will
 
 All the installation instructions are located in [documentation](Resources/doc/index.md)
 
+### Upgrade
+
+If you have already installed v0.1, upgrading to v0.2 introduce some changes: ```pvrEzCommentBundle``` has change name to
+```PvrEzCommentBundle``` in order to validate PSR-0 rule.
+
 ## License
 
 This bundle is under the MIT license. See the complete license in the bundle: LICENSE
