@@ -13,6 +13,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
+        new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
         new pvr\EzCommentBundle\pvrEzCommentBundle(),
     );
 }
