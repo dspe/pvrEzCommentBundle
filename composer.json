@@ -10,12 +10,13 @@
             "homepage": "http://www.pheelit.fr/"
         }
     ],
-    "require": {
-        "ezsystems/ezpublish-kernel": "*",
-        "ezsystems/ezcomments-ls-extension": "*",
-        "gregwar/captcha-bundle": "dev-master"
-    },
     "minimum-stability": "dev",
+    "prefer-stable": "true",
+    "require": {
+        "ezsystems/ezpublish-kernel": "@dev",
+        "ezsystems/ezcomments-ls-extension": "@dev",
+        "gregwar/captcha-bundle": "@dev"
+    },
     "autoload": {
         "psr-0": {
             "pvr\\EzCommentBundle": ""
