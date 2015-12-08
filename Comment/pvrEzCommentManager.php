@@ -19,7 +19,7 @@ use pvr\EzCommentBundle\Comment\PvrEzCommentManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -39,7 +39,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
     protected $moderate_to;
     protected $moderate_template;
     protected $isNotify;
-    /** @var  $translator \Symfony\Component\Translation\Translator */
+    /** @var  $translator \Symfony\Component\Translation\TranslatorInterface */
     protected $translator;
     /** @var $formFactory  \Symfony\Component\Form\FormFactory */
     protected $formFactory;
@@ -62,9 +62,9 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
     }
 
     /**
-     * @param Translator $translator
+     * @param TranslatorInterface $translator
      */
-    public function setTranslator( Translator $translator )
+    public function setTranslator( TranslatorInterface $translator )
     {
         $this->translator = $translator;
     }

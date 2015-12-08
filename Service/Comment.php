@@ -8,7 +8,7 @@ use pvr\EzCommentBundle\Comment\PvrEzCommentManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 
 class Comment
@@ -25,12 +25,12 @@ class Comment
      * @param PvrEzCommentManager $contentManager
      * @param $connection
      * @param LocaleConverter $locale
-     * @param Translator $translator
+     * @param TranslatorInterface $translator
      * @param Repository $repository
      */
     public function __construct(
         PvrEzCommentManager $contentManager, $connection,
-        LocaleConverter $locale, Translator $translator,
+        LocaleConverter $locale, TranslatorInterface $translator,
         Repository $repository
     )
     {
