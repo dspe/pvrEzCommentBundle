@@ -3,14 +3,14 @@ gregwar_captcha_routing:
 
 pvrezcomment_add:
     pattern:  /comment/add/{contentId}
-    defaults: { _controller: pvrEzCommentBundle:Comment:addComment }
+    defaults: { _controller: PvrEzCommentBundle:Comment:addComment }
     requirements:
         _method: POST
         contentId: \d+
 
 pvrezcomment_moderation:
     pattern: /comment/{action}/{contentId}/{sessionHash}/{commentId}
-    defaults: { _controller: pvrEzCommentBundle:Comment:commentModerate }
+    defaults: { _controller: PvrEzCommentBundle:Comment:commentModerate }
     requirements:
         contentId: \d+
         action: approve|reject

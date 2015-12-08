@@ -33,7 +33,7 @@ class PvrEzCommentExtension extends Extension
                     'subject' => "Notify mail",
                     'from' => "no-reply@example.com",
                     'to' => "me@example.com",
-                    'template' => "pvrEzCommentBundle:mail:email_moderate.txt.twig"
+                    'template' => "PvrEzCommentBundle:mail:email_moderate.txt.twig"
                 ),
                 'notify_mail' => array(
                     'enabled' => false,
