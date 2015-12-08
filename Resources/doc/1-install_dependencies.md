@@ -11,7 +11,7 @@ In order to work fully, this bundle need to have some dependencies:
 
 If you use eZ Publish 5.4 or last community version ( >= 2014.11 )
 ```
-php composer.phar require --prefer-dist dspe/pvrezcommentbundle:v0.2
+php composer.phar require --prefer-dist dspe/pvrezcommentbundle:@dev
 ```
 
 ```
