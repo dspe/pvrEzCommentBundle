@@ -2,7 +2,7 @@ YUI().use( "node", "io-base", "io-form", "json-parse", "node-event-simulate", fu
     var form = Y.one('#commentForm');
     var formError = Y.one('#formError');
     var formSuccess = Y.one('#formSuccess');
-    var submitButton = Y.one( '#commentForm input[name^=AddComment]');
+    var submitButton = Y.one( '#commentForm [name^=AddComment]');
     var commentSort = Y.one( '#comments-sort' );
 
     form.on( 'submit', function(evt) {
