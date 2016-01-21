@@ -32,7 +32,7 @@ class CommentController extends Controller
         $response->setMaxAge( $this->container->getParameter( 'pvr_ezcomment.maxage' ) );
         $response->headers->set( 'X-Location-Id', $locationId );
 
-        $data = $this->container->get( 'pvr_ezcomment.service' )->getComments( $locationId, $contentId );
+        $data = $this->container->get( 'pvr_ezcomment.service' )->getComments( $contentId, $locationId );
         $data += array( 'params' => $params );
 
         $template = isset( $params['template'] ) ? $params['template'] : 'PvrEzCommentBundle:blog:list_comments.html.twig';
