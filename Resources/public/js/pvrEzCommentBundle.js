@@ -50,4 +50,25 @@ YUI().use( "node", "io-base", "io-form", "json-parse", "node-event-simulate", fu
         });
     }
 
+    //todo: translate from jquery to yui
+    /*$('.comment-reply').on('click',function() {
+        if($(this).hasClass('active')) {
+            $('#form_parent_comment_id').val(0);
+            $('#commentForm').detach().insertAfter('#formSuccess');
+            $(this).find('i').removeClass().addClass('fa fa-reply');
+            $(this).removeClass('active');
+        } else {
+            var $ancien = $('.comment-reply.active');
+            if($ancien.length) {
+                $ancien.removeClass('active');
+                $ancien.find('i').removeClass().addClass('fa fa-reply');
+            }
+            $(this).addClass('active');
+            $(this).find('i').removeClass().addClass('fa fa-times');
+            var $reply_container = $(this).next('.reply');
+
+            $('#form_parent_comment_id').val($reply_container.data('id'));
+            $('#commentForm').detach().appendTo($reply_container);
+        }
+    });*/
 });

@@ -34,6 +34,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
 
     protected $anonymous_access;
     protected $moderating;
+    protected $comment_reply;
     protected $moderate_subject;
     protected $moderate_from;
     protected $moderate_to;
@@ -48,9 +49,10 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
     protected $encryption;
 
     public function __construct( $config, \Swift_Mailer $mailer, PvrEzCommentEncryption $encryption, ChainRouter   $router  )
-    {   
+    {
         $this->anonymous_access     = $config["anonymous"];
         $this->moderating           = $config["moderating"];
+        $this->comment_reply        = $config["comment_reply"];
         $this->moderate_subject     = $config["moderate_subject"];
         $this->moderate_from        = $config["moderate_from"];
         $this->moderate_to          = $config["moderate_to"];
@@ -112,7 +114,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
     public function getComments( $connection, $contentId, $viewParameters = array(), $status = self::COMMENT_ACCEPT )
     {
         $this->checkConnection( $connection );
-
+        /** @var \eZ\Publish\Core\Persistence\Database\SelectQuery $selectQuery */
         $selectQuery = $connection->createSelectQuery();
 
         $column = "created";
@@ -127,6 +129,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
                 $sort = $selectQuery::ASC;
         }
 
+        //Get Parents Comments
         $selectQuery->select(
             $connection->quoteColumn( 'id' ),
             $connection->quoteColumn( 'created' ),
@@ -135,7 +138,8 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             $connection->quoteColumn( 'email' ),
             $connection->quoteColumn( 'url' ),
             $connection->quoteColumn( 'text' ),
-            $connection->quoteColumn( 'title' )
+            $connection->quoteColumn( 'title' ),
+            $connection->quoteColumn( 'parent_comment_id' )
         )->from(
                 $connection->quoteTable( 'ezcomment' )
             )->where(
@@ -147,13 +151,63 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
                     $selectQuery->expr->eq(
                         $connection->quoteColumn( 'status' ),
                         $selectQuery->bindValue( $status, null, \PDO::PARAM_INT )
+                    ),
+                    $selectQuery->expr->eq(
+                        $connection->quoteColumn( 'parent_comment_id' ),
+                        $selectQuery->bindValue( 0, null, \PDO::PARAM_INT )
                     )
                 )
             )->orderBy( $column, $sort );
         $statement = $selectQuery->prepare();
         $statement->execute();
 
-        return $statement->fetchAll( \PDO::FETCH_ASSOC );
+        $comments = $statement->fetchAll( \PDO::FETCH_ASSOC );
+        if($this->comment_reply) {
+            //Get Childs Comments
+            $selectQuery = $connection->createSelectQuery();
+            $selectQuery->select(
+                $connection->quoteColumn( 'id' ),
+                $connection->quoteColumn( 'created' ),
+                $connection->quoteColumn( 'user_id' ),
+                $connection->quoteColumn( 'name' ),
+                $connection->quoteColumn( 'email' ),
+                $connection->quoteColumn( 'url' ),
+                $connection->quoteColumn( 'text' ),
+                $connection->quoteColumn( 'title' ),
+                $connection->quoteColumn( 'parent_comment_id' )
+            )->from(
+                $connection->quoteTable( 'ezcomment' )
+            )->where(
+                $selectQuery->expr->lAnd(
+                    $selectQuery->expr->eq(
+                        $connection->quoteColumn( 'contentobject_id' ),
+                        $selectQuery->bindValue( $contentId, null, \PDO::PARAM_INT )
+                    ),
+                    $selectQuery->expr->eq(
+                        $connection->quoteColumn( 'status' ),
+                        $selectQuery->bindValue( $status, null, \PDO::PARAM_INT )
+                    ),
+                    $selectQuery->expr->neq(
+                        $connection->quoteColumn( 'parent_comment_id' ),
+                        $selectQuery->bindValue( 0, null, \PDO::PARAM_INT )
+                    )
+                )
+            )->orderBy( $column, $sort );
+            $statement = $selectQuery->prepare();
+            $statement->execute();
+
+            $childs = $statement->fetchAll( \PDO::FETCH_ASSOC );
+
+            for($i=0; $i < count($comments); $i++) {
+                for($j=0; $j < count($childs); $j++) {
+                    if($comments[$i]['id'] == $childs[$j]['parent_comment_id']){
+                        $comments[$i]['children'][] = $childs[$j];
+                        unset($childs[$j]);
+                    }
+                }
+            }
+        }
+        return $comments;
     }
 
     /**
@@ -175,10 +229,10 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
 
         $languageCode = $localeService->convertToEz( $request->getLocale() );
 
-        $created    = $modified = \Time();
-        $status     = $this->hasModeration() ? self::COMMENT_WAITING : self::COMMENT_ACCEPT;
-
-        $selectQuery = $connection->createInsertQuery();
+        $created            = $modified = \Time();
+        $status             = $this->hasModeration() ? self::COMMENT_WAITING : self::COMMENT_ACCEPT;
+        $parentCommentId    = $data[ $this->translator->trans( 'parent_comment_id' )];
+        $selectQuery        = $connection->createInsertQuery();
 
         $selectQuery->insertInto( 'ezcomment' )
             ->set( 'language_id',       $selectQuery->bindValue( $this->getLanguageId( $connection, $languageCode ) ))
@@ -188,7 +242,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             ->set( 'session_key',       $selectQuery->bindValue( $sessionId ))
             ->set( 'ip',                $selectQuery->bindValue( $request->getClientIp() ))
             ->set( 'contentobject_id',  $selectQuery->bindValue( $contentId ))
-            ->set( 'parent_comment_id', $selectQuery->bindValue( 0 ))
+            ->set( 'parent_comment_id', $selectQuery->bindValue( $parentCommentId ))
             ->set( 'name',              $selectQuery->bindValue( $currentUser->versionInfo->contentInfo->name ))
             ->set( 'email',             $selectQuery->bindValue( $currentUser->email ))
             ->set( 'url',               $selectQuery->bindValue( "" ))
@@ -272,6 +326,9 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             $this->translator->trans( 'message' ) => new NotBlank(
                 array( "message" => $this->translator->trans( "Could not be empty" ) )
             ),
+            $this->translator->trans( 'parent_comment_id' ) => new NotBlank(
+                array( "message" => $this->translator->trans( "Could not be empty" ) )
+            ),
         ));
 
         $form = $this->formFactory->createBuilder( 'form', null, array(
@@ -279,11 +336,11 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
         ))->add( $this->translator->trans( 'name' ), 'text')
             ->add( $this->translator->trans( 'email' ), 'email')
             ->add( $this->translator->trans( 'message' ), 'textarea' )
+            ->add( $this->translator->trans( 'parent_comment_id' ), 'hidden', array('data' => 0))
             ->add( $this->translator->trans( 'captcha' ), 'captcha',
                 array( 'as_url' => true, 'reload' => true )
             )
             ->getForm();
-
         return $form;
     }
 
@@ -298,11 +355,15 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             $this->translator->trans( 'message' ) => new NotBlank(
                 array( "message" => $this->translator->trans( "Could not be empty" ) )
             ),
+            $this->translator->trans( 'parent_comment_id' ) => new NotBlank(
+                array( "message" => $this->translator->trans( "Could not be empty" ) )
+            ),
         ));
 
         $form = $this->formFactory->createBuilder( 'form', null, array(
             'constraints' => $collectionConstraint
         ))->add( $this->translator->trans( 'message' ), 'textarea' )
+          ->add( $this->translator->trans( 'parent_comment_id' ), 'hidden', array('data' => 0))
             ->getForm();
 
         return $form;
@@ -436,7 +497,6 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
         $statement->execute();
 
         $row = $statement->fetch();
-
         return $row !== false ? true : false;
     }
 
@@ -508,6 +568,13 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
         return $statement->rowCount();
     }
 
+    /**
+     * @return bool
+     */
+    public function canReply()
+    {
+        return $this->comment_reply;
+    }
     /**
      * @return bool
      */

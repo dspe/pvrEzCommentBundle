@@ -29,6 +29,7 @@ class PvrEzCommentExtension extends Extension
             array(
                 'anonymous' => false,
                 'moderating' => false,
+                'comment_reply' => true,
                 'moderate_mail' => array(
                     'subject' => "Notify mail",
                     'from' => "no-reply@example.com",
@@ -48,6 +49,7 @@ class PvrEzCommentExtension extends Extension
         $container->setParameter( 'pvr_ezcomment.config',  array( 
             "anonymous"         => $config['anonymous'],
             "moderating"        => $config['moderating'],
+            "comment_reply"     => $config['comment_reply'],
             "moderate_subject"  => $config['moderate_mail']['subject'],
             "moderate_from"     => $config['moderate_mail']['from'],
             "moderate_to"       => $config['moderate_mail']['to'],

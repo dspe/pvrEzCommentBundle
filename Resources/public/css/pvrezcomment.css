@@ -34,6 +34,9 @@
     -o-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out;
 }
+.comment-role.reply {
+    padding-left: 40px;
+}
 .comment-role .avatar {
     top: 0;
     position: absolute;

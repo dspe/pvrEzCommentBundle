@@ -72,7 +72,9 @@ class Comment
         return
             array(
                 'comments'  => $comments,
-                'contentId' => $contentId
+                'contentId' => $contentId,
+                'reply'     => $this->contentManager->canReply(),
+
             );
     }
 
