@@ -202,7 +202,6 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
                 for($j=0; $j < count($childs); $j++) {
                     if($comments[$i]['id'] == $childs[$j]['parent_comment_id']){
                         $comments[$i]['children'][] = $childs[$j];
-                        unset($childs[$j]);
                     }
                 }
             }
