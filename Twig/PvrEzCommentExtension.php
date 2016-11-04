@@ -1,5 +1,6 @@
 <?php
 
+
 namespace pvr\EzCommentBundle\Twig;
 
 use eZ\Publish\Core\Persistence\Legacy\EzcDbHandler;
@@ -33,4 +34,3 @@ class PvrEzCommentExtension extends \Twig_Extension
         return 'pvrezcomment_extension';
     }
 }
-
