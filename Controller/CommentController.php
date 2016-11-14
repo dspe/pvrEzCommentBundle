@@ -20,7 +20,6 @@ class CommentController extends Controller
     /**
      * List comments from a certain contentId
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param $contentId id from current content
      * @param $locationId
      * @param array $params
