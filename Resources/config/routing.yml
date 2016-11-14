@@ -2,14 +2,14 @@ gregwar_captcha_routing:
     resource: "@GregwarCaptchaBundle/Resources/config/routing/routing.yml"
 
 pvrezcomment_add:
-    pattern:  /comment/add/{contentId}
+    path:  /comment/add/{contentId}
     defaults: { _controller: PvrEzCommentBundle:Comment:addComment }
     requirements:
         _method: POST
         contentId: \d+
 
 pvrezcomment_moderation:
-    pattern: /comment/{action}/{contentId}/{sessionHash}/{commentId}
+    path: /comment/{action}/{contentId}/{sessionHash}/{commentId}
     defaults: { _controller: PvrEzCommentBundle:Comment:commentModerate }
     requirements:
         contentId: \d+

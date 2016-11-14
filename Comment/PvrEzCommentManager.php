@@ -15,8 +15,6 @@ use eZ\Publish\Core\MVC\Symfony\Routing\ChainRouter;
 use eZ\Publish\Core\Persistence\Legacy\EzcDbHandler;
 use eZ\Publish\Core\Repository\Values\User\User as EzUser;
 use eZ\Publish\Core\MVC\Symfony\Locale\LocaleConverter;
-use pvr\EzCommentBundle\Comment\PvrEzCommentManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -47,8 +45,9 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
     protected $templating;
     protected $mailer;
     protected $encryption;
+    protected $router;
 
-    public function __construct( $config, \Swift_Mailer $mailer, PvrEzCommentEncryption $encryption, ChainRouter   $router  )
+    public function __construct( $config, \Swift_Mailer $mailer, PvrEzCommentEncryption $encryption, ChainRouter $route )
     {
         $this->anonymous_access     = $config["anonymous"];
         $this->moderating           = $config["moderating"];
@@ -60,7 +59,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
         $this->isNotify             = $config["notify_enabled"];
         $this->mailer               = $mailer;
         $this->encryption           = $encryption;
-        $this->router               = $router;
+        $this->router               = $route;
     }
 
     /**
@@ -79,7 +78,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
         $this->formFactory = $form;
     }
 
-    public function setTemplating( DelegatingEngine $templating )
+    public function setTemplating( \Twig_Environment $templating )
     {
         $this->templating = $templating;
     }
