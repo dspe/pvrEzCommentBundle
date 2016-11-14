@@ -1,14 +1,21 @@
 parameters:
     pvr_ezcomment.encryption.class: pvr\EzCommentBundle\Comment\PvrEzCommentEncryption
+    pvr_ezcomment.installer.class: pvr\EzCommentBundle\Installer\CommentInstaller
     pvr_ezcomment.manager.class: pvr\EzCommentBundle\Comment\PvrEzCommentManager
     pvr_ezcomment.maxage: 60
-    pvr_ezcomment.twig_extension.class: pvr\EzCommentBundle\Twig\PvrEzCommentExtension
     pvr_ezcomment.service.class: pvr\EzCommentBundle\Service\Comment
+    pvr_ezcomment.twig_extension.class: pvr\EzCommentBundle\Twig\PvrEzCommentExtension
 
     ezpublish.api.role.limitation_type.content_section.class: eZ\Publish\Core\Limitation\SectionLimitationType
 
 
 services:
+    pvr_ezcomment.installer.comment_installer:
+        parent: ezplatform.installer.db_based_installer
+        class: "%pvr_ezcomment.installer.class%"
+        tags:
+            - { name: ezplatform.installer, type: comment }
+
     pvr_ezcomment.manager:
         class: "%pvr_ezcomment.manager.class%"
         arguments:
