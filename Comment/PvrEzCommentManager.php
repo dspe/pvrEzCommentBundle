@@ -42,7 +42,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
     protected $translator;
     /** @var $formFactory  \Symfony\Component\Form\FormFactory */
     protected $formFactory;
-    protected $templating;
+    protected $twig;
     protected $mailer;
     protected $encryption;
     protected $router;
@@ -78,9 +78,9 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
         $this->formFactory = $form;
     }
 
-    public function setTemplating( \Twig_Environment $templating )
+    public function setTwig( \Twig_Environment $twig )
     {
-        $this->templating = $templating;
+        $this->twig = $twig;
     }
 
     /**
@@ -440,7 +440,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             ->setFrom( $this->moderate_from )
             ->setTo( $this->moderate_to )
             ->setBody(
-                $this->templating->render( $this->moderate_template, array(
+                $this->twig->render( $this->moderate_template, array(
                     "name"  => $name,
                     "email" => $email,
                     "comment" => $data[ $this->translator->trans( 'message' )],

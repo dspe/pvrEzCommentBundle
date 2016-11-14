@@ -19,7 +19,7 @@ services:
         calls:
             - [ setTranslator, ["@translator"] ]
             - [ setFormFactory, ["@form.factory"] ]
-            - [ setTemplating, ["@twig"] ]
+            - [ setTwig, ["@twig"] ]
 
     pvr_ezcomment.encryption:
         class: "%pvr_ezcomment.encryption.class%"
