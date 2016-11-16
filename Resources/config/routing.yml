@@ -16,3 +16,7 @@ pvrezcomment_moderation:
         action: approve|reject
         commentId: \d+
 
+pvrezcomment_dashboard:
+    path: /dashboard
+    defaults:
+        _controller: pvr_ezcomment.controller.dashboard:dashboardAction
