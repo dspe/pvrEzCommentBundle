@@ -6,10 +6,13 @@ parameters:
     pvr_ezcomment.service.class: pvr\EzCommentBundle\Service\Comment
     pvr_ezcomment.twig_extension.class: pvr\EzCommentBundle\Twig\PvrEzCommentExtension
 
+    pvr_ezcomment.controller.dashboard.class: pvr\EzCommentBundle\Controller\DashboardController
+
     ezpublish.api.role.limitation_type.content_section.class: eZ\Publish\Core\Limitation\SectionLimitationType
 
 
 services:
+    # Installer for pvrezcomments
     pvr_ezcomment.installer.comment_installer:
         parent: ezplatform.installer.db_based_installer
         class: "%pvr_ezcomment.installer.class%"
@@ -41,8 +44,12 @@ services:
 
     ezpublish.twig.pvrezcomment_extension:
         class: "%pvr_ezcomment.twig_extension.class%"
-        arguments: ["@pvr_ezcomment.manager", "@ezpublish.connection"]
-        lazy: true
+        arguments:
+            - "@pvr_ezcomment.manager"
+            - "@ezpublish.connection"
+            - "@ezpublish.api.service.content"
+            - "@ezpublish.translation_helper"
+            - "@ezpublish.api.service.location"
         tags:
             - { name: twig.extension }
 
@@ -58,4 +65,7 @@ services:
             - "@translator"
             - "@ezpublish.api.repository"
 
-
+    # Pjax Dashboard Controller service
+    pvr_ezcomment.controller.dashboard:
+        class: '%pvr_ezcomment.controller.dashboard.class%'
+        parent: ezsystems.platformui.controller.base

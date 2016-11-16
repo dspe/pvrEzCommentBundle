@@ -596,9 +596,10 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
      * @param $connection Get connection to eZ Publish Database
      * @param int $limit
      *
+     * @param bool $onlyAccept
      * @return mixed Array or false
      */
-    public function getLastComments( $connection, $limit = 5 )
+    public function getLastComments( $connection, $limit = 5, $onlyAccept = false )
     {
         $this->checkConnection( $connection );
 
@@ -620,12 +621,19 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             $connection->quoteColumn( 'title' )
         )->from(
                 $connection->quoteTable( 'ezcomment' )
-            )->where(
+        );
+
+        // Filter only by accept comment ...
+        if (!$onlyAccept) {
+            $selectQuery->where(
                 $selectQuery->expr->eq(
                     $connection->quoteColumn( 'status' ),
                     $selectQuery->bindValue( self::COMMENT_ACCEPT, null, \PDO::PARAM_INT )
                 )
-            )->orderBy( $column, $sort )
+            );
+        }
+
+        $selectQuery->orderBy( $column, $sort )
              ->limit( $limit );
 
         $statement = $selectQuery->prepare();
