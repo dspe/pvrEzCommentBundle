@@ -1,0 +1,30 @@
+system:
+    default:
+        yui:
+            modules:
+                # Plugin
+                pvrezcomment-listplugin:
+                    dependencyOf: ['ez-platformuiapp']
+                    requires: ['ez-pluginregistry', 'plugin', 'base', 'pvrezcomment-listview', 'pvrezcomment-dashboardservice']
+                    path: '%pvr_ezcomment.public_dir%/js/apps/plugins/pvrezcomment-listplugin.js'
+
+                # Navigation
+                pvrezcomment-navigationplugin:
+                    dependencyOf: ['ez-navigationhubviewservice']
+                    requires: ['ez-pluginregistry', 'ez-viewservicebaseplugin', 'ez-navigationitemview']
+                    path: '%pvr_ezcomment.public_dir%/js/apps/views/pvrezcomment-navigationplugin.js'
+
+                # DashBoard View
+                pvrezcomment-listview:
+                    requires: ['ez-serversideview']
+                    path: '%pvr_ezcomment.public_dir%/js/apps/views/pvrezcomment-listview.js'
+
+                # Dashboard Template
+#                pvrezcommentlistview-ez-template:
+#                    type: 'template'
+#                    path: '%pvr_ezcomment.public_dir%/js/apps/templates/pvrezcommentlistview.hbt'
+
+                # Dashboard Service
+                pvrezcomment-dashboardservice:
+                    requires: ['ez-serversideviewservice']
+                    path: '%pvr_ezcomment.public_dir%/js/apps/views/services/pvrezcomment-dashboardservice.js'
