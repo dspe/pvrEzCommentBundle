@@ -5,16 +5,13 @@ YUI.add('pvrezcomment-navigationplugin', function (Y) {
         initializer: function () {
             var service = this.get('host'); // the plugged object is called host
 
-            console.log("Hey, I'm a plugin for NavigationHubViewService");
-            console.log("And I'm plugged in ", service);
-
             service.addNavigationItem({
                 Constructor: Y.eZ.NavigationItemView,
                 config: {
                     title: "Comments",
                     identifier: "pvrezcomment-dashboard",
                     route: {
-                        name: "Dashboard"
+                        name: "pvrDashboard"
                     }
                 }
             }, 'platform');

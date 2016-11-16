@@ -1,7 +1,7 @@
-YUI.add('pvrezcomment-listview', function (Y) {
+YUI.add('pvrezcomment-dashboardview', function (Y) {
     Y.namespace('PvrEzComment');
 
-    Y.PvrEzComment.ListView = Y.Base.create('pvrezcommentListView', Y.eZ.ServerSideView, [], {
+    Y.PvrEzComment.DashboardView = Y.Base.create('pvrezcommentDashboardView', Y.eZ.ServerSideView, [], {
 
         events: {
             '.pvrezcomment-location': {
@@ -10,13 +10,11 @@ YUI.add('pvrezcomment-listview', function (Y) {
         },
 
         initializer: function () {
-            console.log('listview.js');
-            this.containerTemplate = '<div class="ez-view-pvrezcommentlistview"/>';
+            this.containerTemplate = '<div class="ez-view-pvrezcommentdashboardview"/>';
         },
 
         _navigateToLocation: function(e) {
             var link = e.target;
-            console.log("listview ici?");
             e.preventDefault();
             this.fire('navigateTo', {
                 routeName: link.getData('route-name'),

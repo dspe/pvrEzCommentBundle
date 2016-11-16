@@ -1,45 +1,45 @@
-.ez-view-pvrezcommentlistview {
+.ez-view-pvrezcommentdashboardview {
     background: #fff;
 }
 
-.ez-view-pvrezcommentlistview .pvrezcomment-title {
+.ez-view-pvrezcommentdashboardview .pvrezcomment-title {
     margin-top: 0;
 }
 
-.ez-view-pvrezcommentlistview .pvrezcomment-list {
+.ez-view-pvrezcommentdashboardview .pvrezcomment-dashboard {
     margin: 0 auto;
 }
 
-.ez-view-pvrezcommentlistview .l-box {
+.ez-view-pvrezcommentdashboardview .l-box {
     padding: 1em;
 }
 
-.ez-view-pvrezcommentlistview table {
+.ez-view-pvrezcommentdashboardview table {
     width: 100%;
 }
 
 /**
  * Display right table
  **/
-.ez-view-pvrezcommentlistview table.status thead {
+.ez-view-pvrezcommentdashboardview table.status thead {
     display: none;
 }
 
-.ez-view-pvrezcommentlistview table.status thead {
+.ez-view-pvrezcommentdashboardview table.status thead {
     display: none;
 }
 
-.ez-view-pvrezcommentlistview table.status tbody {
+.ez-view-pvrezcommentdashboardview table.status tbody {
     font-size: 0.9em;
 }
 
-.ez-view-pvrezcommentlistview table.status tr {
+.ez-view-pvrezcommentdashboardview table.status tr {
     margin-bottom: 10px;
     display: block;
     border-bottom: 2px solid #ddd;
 }
 
-.ez-view-pvrezcommentlistview table.status td {
+.ez-view-pvrezcommentdashboardview table.status td {
     padding: 2px 0;
     display: block;
     text-align: right;
@@ -47,13 +47,13 @@
     border-bottom: 1px dotted #ccc;
 }
 
-.ez-view-pvrezcommentlistview table.status td:before {
+.ez-view-pvrezcommentdashboardview table.status td:before {
     content: attr(data-label);
     float: left;
     text-transform: uppercase;
     font-weight: bold;
 }
 
-.ez-view-pvrezcommentlistview table.status td:last-child {
+.ez-view-pvrezcommentdashboardview table.status td:last-child {
     border-bottom: 0;
 }

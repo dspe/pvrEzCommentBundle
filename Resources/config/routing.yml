@@ -17,6 +17,6 @@ pvrezcomment_moderation:
         commentId: \d+
 
 pvrezcomment_dashboard:
-    path: /dashboard
+    path: /comment/dashboard
     defaults:
         _controller: pvr_ezcomment.controller.dashboard:dashboardAction

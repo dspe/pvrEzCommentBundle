@@ -1,20 +1,19 @@
-YUI.add('pvrezcomment-listplugin', function (Y) {
+YUI.add('pvrezcomment-dashboardplugin', function (Y) {
     Y.namespace('PvrEzComment.Plugin');
 
-    Y.PvrEzComment.Plugin.ListPlugin = Y.Base.create('pvrezcommentListPLugin', Y.Plugin.Base, [], {
+    Y.PvrEzComment.Plugin.DashboardPlugin = Y.Base.create('pvrezcommentDashboardPLugin', Y.Plugin.Base, [], {
         initializer: function () {
             var app = this.get('host');
 
-            console.log("listplugin.js");
-            app.views.pvrezcommentListView = {
-                type: Y.PvrEzComment.ListView
+            app.views.pvrezcommentDashboardView = {
+                type: Y.PvrEzComment.DashboardView
             };
 
             app.route({
-                name: 'Dashboard',
+                name: 'pvrDashboard',
                 path: '/comment/dashboard',
-                view: 'pvrezcommentListView',
-                service: Y.PvrEzComment.ListViewService,
+                view: 'pvrezcommentDashboardView',
+                service: Y.PvrEzComment.DashboardViewService,
                 sideViews: {'navigationHub': true, 'discoveryBar': false},
                 callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView'],
             });
@@ -24,6 +23,6 @@ YUI.add('pvrezcomment-listplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.PvrEzComment.Plugin.ListPlugin, ['platformuiApp']
+        Y.PvrEzComment.Plugin.DashboardPlugin, ['platformuiApp']
     );
 });
