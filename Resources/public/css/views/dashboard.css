@@ -19,6 +19,15 @@
 }
 
 /**
+ * Filter toolbar
+ **/
+.ez-view-pvrezcommentdashboardview .pvrezcomment-toolbar {
+    display: block;
+    padding: 5px;
+    text-align: right;
+}
+
+/**
  * Display right table
  **/
 .ez-view-pvrezcommentdashboardview table.status thead {
@@ -57,3 +66,27 @@
 .ez-view-pvrezcommentdashboardview table.status td:last-child {
     border-bottom: 0;
 }
+
+/**
+ * Pagination
+ **/
+.ez-view-pvrezcommentdashboardview .prvezcomment-pagination {
+    margin: 0;
+    width: 100%;
+    list-style-type: none;
+}
+
+.ez-view-pvrezcommentdashboardview .pvrezcomment-page {
+    display: inline-block;
+    width: 40%;
+}
+
+.ez-view-pvrezcommentdashboardview .pvrezcomment-previous {
+    text-align: right;
+    margin-right: 1em;
+}
+
+.ez-view-pvrezcommentdashboardview .pvrezcomment-next {
+     text-align: left;
+     margin-left: 1em;
+ }

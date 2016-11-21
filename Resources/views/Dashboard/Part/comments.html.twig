@@ -1,0 +1,64 @@
+<div class="pvrezcomment-toolbar">
+    <label for="status-list">Filter by Status</label>
+    <select id="status-list" class="pvrezcomment-status">
+        <option value="-1" {% if status is same as(false) %}selected{% endif %}>None</option>
+        <option value="0" {% if status == 0 and not status is same as(false) %}selected{% endif %}>Waiting</option>
+        <option value="1" {% if status == 1 %}selected{% endif %}>Published</option>
+        <option value="2" {% if status == 2 %}selected{% endif %}>Rejected</option>
+    </select>
+</div>
+
+<table class="pure-table pure-table-horizontal">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Comment</th>
+        <th>Author</th>
+        <th>Content</th>
+        <th>Created</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for comment in comments %}
+        <tr>
+            <td>{{ comment.id }}</td>
+            <td>{{ comment.text }} <div class="tools">[ Accept | Rejected | Delete ]</div> </td>
+            <td>{{ comment.name }}</td>
+            {% set location = comment.contentobject_id|getMainLocation() %}
+            <td><a class="pvrezcomment-location" href=""
+                   data-route-name="viewLocation"
+                   data-route-id="{{ path('ezpublish_rest_loadLocation', {locationPath: location.pathString|trim('/')}) }}"
+                   data-route-languageCode="{{ location.contentInfo.mainLanguageCode }}"
+                >
+                    {{ comment.contentobject_id|getContentName() }}
+                </a></td>
+            <td>{{ comment.created|date() }}</td>
+            <td>
+                {% transchoice comment.status %}
+                {0}Waiting |{1}Published | {2}Rejected
+                {% endtranschoice %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% if haveToPaginate %}
+    <ul class="pvrezcomment-pagination">
+        <li class="pvrezcomment-page pvrezcomment-previous">
+            {% if previous is not same as(false) %}
+                <a href="{{ url('pvrezcomment_dashboard', {offset: previous}) }}" class="pvrezcomment-page-link" data-offset="{{ previous }}">&laquo; Previous</a>
+            {% else %}
+                <span>&laquo; Previous</span>
+            {% endif %}
+        </li>
+        <li class="pvrezcomment-page pvrezcomment-next">
+            {% if next %}
+                <a href="{{ url('pvrezcomment_dashboard', {offset: next}) }}" class="pvrezcomment-page-link" data-offset="{{ next }}">Next &raquo;</a>
+            {% else %}
+                <span>Next &raquo;</span>
+            {% endif %}
+        </li>
+    </ul>
+{% endif %}
