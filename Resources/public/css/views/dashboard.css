@@ -19,6 +19,31 @@
 }
 
 /**
+ * Display tools to accept, reject and delete a comment
+ **/
+.ez-view-pvrezcommentdashboardview .tools {
+    display: block;
+    font-size: 0.9em;
+    text-align: center;
+    padding-top: 5px;
+}
+.ez-view-pvrezcommentdashboardview .pvrezcomment-status-link {
+    color: #525252;
+}
+.ez-view-pvrezcommentdashboardview .pvrezcomment-status-link:first-of-type {
+    color: #49941b;
+}
+.ez-view-pvrezcommentdashboardview .pvrezcomment-delete-link {
+    color: #ff0000;
+}
+.ez-view-pvrezcommentdashboardview .pvrezcomment-status-link:hover,
+.ez-view-pvrezcommentdashboardview .pvrezcomment-delete-link:hover
+ {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/**
  * Filter toolbar
  **/
 .ez-view-pvrezcommentdashboardview .pvrezcomment-toolbar {

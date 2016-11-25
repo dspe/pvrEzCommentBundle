@@ -8,11 +8,11 @@
     </select>
 </div>
 
-<table class="pure-table pure-table-horizontal">
+<table class="pure-table pure-table-horizontal comments">
     <thead>
     <tr>
         <th>#</th>
-        <th>Comment</th>
+        <th style="min-width: 200px">Comment</th>
         <th>Author</th>
         <th>Content</th>
         <th>Created</th>
@@ -23,7 +23,7 @@
     {% for comment in comments %}
         <tr>
             <td>{{ comment.id }}</td>
-            <td>{{ comment.text }} <div class="tools">[ Accept | Rejected | Delete ]</div> </td>
+            <td>{{ comment.text }} <div class="tools">[ <a href="" class="pvrezcomment-status-link" data-status-id="1" data-comment-id="{{ comment.id }}">Accept</a> | <a href="" class="pvrezcomment-status-link" data-status-id="2" data-comment-id="{{ comment.id }}">Rejected</a> | <a class="pvrezcomment-delete-link" data-comment-id="{{ comment.id }}" href="">Delete</a> ]</div> </td>
             <td>{{ comment.name }}</td>
             {% set location = comment.contentobject_id|getMainLocation() %}
             <td><a class="pvrezcomment-location" href=""

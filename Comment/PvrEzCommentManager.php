@@ -12,9 +12,11 @@
 namespace pvr\EzCommentBundle\Comment;
 
 use eZ\Publish\Core\MVC\Symfony\Routing\ChainRouter;
+use eZ\Publish\Core\Persistence\Database\DatabaseHandler;
 use eZ\Publish\Core\Persistence\Legacy\EzcDbHandler;
 use eZ\Publish\Core\Repository\Values\User\User as EzUser;
 use eZ\Publish\Core\MVC\Symfony\Locale\LocaleConverter;
+use eZ\Publish\Core\REST\Common\Exceptions\NotFoundException;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -392,7 +394,7 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
                 $errors[$key] = $err;
             }
         }
-        
+
         return $errors;
     }
 
@@ -534,31 +536,79 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
     }
 
     /**
-     * @param int $contentId
+     * @param $connection
+     * @param $commentId
+     * @param int $status
+     * @return mixed
+     */
+    public function updateStatusFromUI( $connection, $commentId, $status = self::COMMENT_REJECTED )
+    {
+        $this->checkConnection( $connection );
+
+        $updateQuery = $connection->createUpdateQuery();
+
+        $updateQuery->update(
+            $connection->quoteTable( 'ezcomment' )
+        )->set(
+            $connection->quoteColumn( 'status' ),
+            $updateQuery->bindValue( $status, null, \PDO::PARAM_INT )
+        )->where(
+            $updateQuery->expr->eq(
+                $connection->quoteColumn( 'id' ),
+                $updateQuery->bindValue( $commentId, null, \PDO::PARAM_INT )
+            )
+        );
+        $statement = $updateQuery->prepare();
+        return $statement->execute();
+    }
+
+    /**
+     * @param bool|int $contentId
      * @param EzcDbHandler $handler
+     * @param int $status
      * @return int
      */
-    public function getCountComments( $contentId, EzcDbHandler $handler )
+    public function getCountComments( $contentId = false, EzcDbHandler $handler, $status = -1 )
     {
+        $contentFilter = $statusFilter = "";
+
         $this->checkConnection( $handler );
 
         $selectQuery = $handler->createSelectQuery();
+        $selectQuery->select( '*' )->from( $handler->quoteTable( 'ezcomment' ) );
 
-        $selectQuery->select( '*' )
-            ->from(
-                $handler->quoteTable( 'ezcomment' )
-            )->where(
+        if ($contentId) {
+            $contentFilter = $selectQuery->expr->eq(
+                $handler->quoteColumn( 'contentobject_id' ),
+                $selectQuery->bindValue( $contentId, null, \PDO::PARAM_INT )
+            );
+        }
+
+        if ($status and $status != -1) {
+            $statusFilter = $selectQuery->expr->eq(
+                $handler->quoteColumn( 'status' ),
+                $selectQuery->bindValue( $status, null, \PDO::PARAM_INT )
+            );
+        }
+
+        // Where with an AND
+        if ($contentFilter != "" and $statusFilter != "") {
+            $selectQuery->where(
                 $selectQuery->expr->lAnd(
-                    $selectQuery->expr->eq(
-                        $handler->quoteColumn( 'contentobject_id' ),
-                        $selectQuery->bindValue( $contentId, null, \PDO::PARAM_INT )
-                    ),
-                    $selectQuery->expr->eq(
-                        $handler->quoteColumn( 'status' ),
-                        $selectQuery->bindValue( self::COMMENT_ACCEPT, null, \PDO::PARAM_INT )
-                    )
+                    $contentFilter, $statusFilter
                 )
             );
+        }
+
+        // Filter only with ContentId
+        if (($contentFilter != "" and $statusFilter == "")) {
+            $selectQuery->where( $contentFilter );
+        }
+
+        // Filter only with Status
+        if (($contentFilter == "" and $statusFilter != "")) {
+            $selectQuery->where( $statusFilter );
+        }
 
         $statement = $selectQuery->prepare();
         $statement->execute();
@@ -593,17 +643,19 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
     /**
      * Get list of last comments
      *
-     * @param $connection Get connection to eZ Publish Database
+     * @param DatabaseHandler $connection Get connection to eZ Publish Database
      * @param int $limit
      *
-     * @param bool $onlyAccept
+     * @param int $offset
+     * @param int $status
      * @return mixed Array or false
+     * @internal param bool $onlyAccept
      */
-    public function getLastComments( $connection, $limit = 5, $onlyAccept = false )
+    public function getLastComments( DatabaseHandler $connection, $limit = 5, $offset = 0, $status = -1 )
     {
         $this->checkConnection( $connection );
 
-        /** @var \ezcQuerySelect $selectQuery */
+        /** @var \eZ\Publish\Core\Persistence\Database\SelectQuery $selectQuery */
         $selectQuery = $connection->createSelectQuery();
 
         $column = "created";
@@ -618,23 +670,23 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             $connection->quoteColumn( 'email' ),
             $connection->quoteColumn( 'url' ),
             $connection->quoteColumn( 'text' ),
-            $connection->quoteColumn( 'title' )
+            $connection->quoteColumn( 'title' ),
+            $connection->quoteColumn( 'status' )
         )->from(
                 $connection->quoteTable( 'ezcomment' )
         );
 
         // Filter only by accept comment ...
-        if (!$onlyAccept) {
+        if ($status !== -1) {
             $selectQuery->where(
                 $selectQuery->expr->eq(
                     $connection->quoteColumn( 'status' ),
-                    $selectQuery->bindValue( self::COMMENT_ACCEPT, null, \PDO::PARAM_INT )
+                    $selectQuery->bindValue( $status, null, \PDO::PARAM_INT )
                 )
             );
         }
 
-        $selectQuery->orderBy( $column, $sort )
-             ->limit( $limit );
+        $selectQuery->orderBy( $column, $sort )->limit( $limit, (int)$offset );
 
         $statement = $selectQuery->prepare();
         $statement->execute();
@@ -723,5 +775,62 @@ class PvrEzCommentManager implements PvrEzCommentManagerInterface
             return 0;
         }
     }
-}
 
+    /**
+     * Check if status exists
+     *
+     * @param $status
+     * @return bool
+     */
+    public function statusExists( $status )
+    {
+        return in_array($status, [
+            self::COMMENT_WAITING,
+            self::COMMENT_ACCEPT,
+            self::COMMENT_REJECTED
+        ]);
+    }
+
+    /**
+     * @param $commentId
+     * @param DatabaseHandler $connection
+     * @return bool
+     */
+    public function commentExists($commentId, DatabaseHandler $connection)
+    {
+        $selectQuery = $connection->createSelectQuery();
+        $selectQuery->select( '*' )
+            ->from( $connection->quoteTable('ezcomment') )
+            ->where( $selectQuery->expr->eq(
+                $connection->quoteColumn( 'id' ),
+                $selectQuery->bindValue( $commentId, null, \PDO::PARAM_INT)
+            ));
+        $statement = $selectQuery->prepare();
+        $statement->execute();
+        return $statement->rowCount() > 0 ? true : false;
+    }
+
+    /**
+     * @param $commentId
+     * @param DatabaseHandler $connection
+     * @return NotFoundException
+     * @throws NotFoundException
+     */
+    public function deleteById( $commentId, DatabaseHandler $connection )
+    {
+        if (!$this->commentExists($commentId, $connection)) {
+            throw new NotFoundException( "Comment with Id $commentId not exists ! ");
+        }
+
+        $deleteQuery = $connection->createDeleteQuery();
+        $deleteQuery->deleteFrom( 'ezcomment' )
+            ->where(
+                $deleteQuery->expr->eq(
+                    'id', $deleteQuery->bindValue( $commentId, null, \PDO::PARAM_INT )
+                )
+            );
+
+        $statement = $deleteQuery->prepare();
+        $statement->execute();
+    }
+}

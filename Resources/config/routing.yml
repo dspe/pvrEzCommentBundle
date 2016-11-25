@@ -17,6 +17,11 @@ pvrezcomment_moderation:
         commentId: \d+
 
 pvrezcomment_dashboard:
-    path: /comment/dashboard
+    path: /comment/dashboard/{offset}/{status}
     defaults:
         _controller: pvr_ezcomment.controller.dashboard:dashboardAction
+        offset: 0
+        status: -1
+    requirements:
+        offset: \d+
+        status: -?\d+

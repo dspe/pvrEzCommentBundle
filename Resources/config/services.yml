@@ -69,3 +69,8 @@ services:
     pvr_ezcomment.controller.dashboard:
         class: '%pvr_ezcomment.controller.dashboard.class%'
         parent: ezsystems.platformui.controller.base
+
+    # Rest Controller
+    pvrEzCommentBundle.controller.comment:
+        class: pvr\EzCommentBundle\Rest\Controller\CommentController
+        parent: ezpublish_rest.controller.base
