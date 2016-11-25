@@ -12,6 +12,7 @@
 namespace pvr\EzCommentBundle\Controller;
 
 use eZ\Bundle\EzPublishCoreBundle\Controller;
+use eZ\Publish\Core\Repository\Permission\PermissionResolver;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +21,6 @@ class CommentController extends Controller
     /**
      * List comments from a certain contentId
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param $contentId id from current content
      * @param $locationId
      * @param array $params
@@ -31,6 +31,14 @@ class CommentController extends Controller
         $response = new Response();
         $response->setMaxAge( $this->container->getParameter( 'pvr_ezcomment.maxage' ) );
         $response->headers->set( 'X-Location-Id', $locationId );
+
+        $repository = $this->container->get('ezpublish.api.repository');
+        $currentUserId = $repository->getPermissionResolver()->getCurrentUserReference();
+        $currentUser = $repository->getUserService()->loadUser( $currentUserId->getUserId() );
+
+        $canComment = $repository->getPermissionResolver()->canUser('comment', 'add', $currentUser);
+
+        $params += [ 'canComment' => $canComment ];
 
         $data = $this->container->get( 'pvr_ezcomment.service' )->getComments( $contentId, $locationId );
         $data += array( 'params' => $params );

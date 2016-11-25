@@ -79,6 +79,13 @@ class Configuration implements ConfigurationInterface
                         ->end()
                      ->end()
                 ->end()
+                ->arrayNode( 'dashboard' )
+                    ->children()
+                        ->integerNode( 'limit' )
+                            ->min(1)->defaultValue(5)
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
 

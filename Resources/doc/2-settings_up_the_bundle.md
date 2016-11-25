@@ -7,7 +7,7 @@ Enable the bundle in the EzpublishKernel:
 
 ```php
 <?php
-// ezpublish/EzpublishKernel.php
+// app/AppKernel.php
 
 public function registerBundles()
 {

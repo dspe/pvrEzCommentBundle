@@ -1,0 +1,3 @@
+<h1 class="pvrezcomment-title">Dashboard view</h1>
+
+Hey, I'm the {{ name }} and I'm rendered with the template!

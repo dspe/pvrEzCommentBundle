@@ -1,0 +1,5 @@
+system:
+    default:
+        css:
+            files:
+                - '%pvr_ezcomment.css_dir%/views/dashboard.css'

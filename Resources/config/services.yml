@@ -1,53 +1,76 @@
 parameters:
     pvr_ezcomment.encryption.class: pvr\EzCommentBundle\Comment\PvrEzCommentEncryption
+    pvr_ezcomment.installer.class: pvr\EzCommentBundle\Installer\CommentInstaller
     pvr_ezcomment.manager.class: pvr\EzCommentBundle\Comment\PvrEzCommentManager
     pvr_ezcomment.maxage: 60
-    pvr_ezcomment.twig_extension.class: pvr\EzCommentBundle\Twig\PvrEzCommentExtension
     pvr_ezcomment.service.class: pvr\EzCommentBundle\Service\Comment
+    pvr_ezcomment.twig_extension.class: pvr\EzCommentBundle\Twig\PvrEzCommentExtension
+
+    pvr_ezcomment.controller.dashboard.class: pvr\EzCommentBundle\Controller\DashboardController
 
     ezpublish.api.role.limitation_type.content_section.class: eZ\Publish\Core\Limitation\SectionLimitationType
 
 
 services:
+    # Installer for pvrezcomments
+    pvr_ezcomment.installer.comment_installer:
+        parent: ezplatform.installer.db_based_installer
+        class: "%pvr_ezcomment.installer.class%"
+        tags:
+            - { name: ezplatform.installer, type: comment }
+
     pvr_ezcomment.manager:
-        class: %pvr_ezcomment.manager.class%
+        class: "%pvr_ezcomment.manager.class%"
         arguments:
-            - %pvr_ezcomment.config%
-            - @mailer
-            - @pvr_ezcomment.encryption
-            - @router
+            - "%pvr_ezcomment.config%"
+            - "@mailer"
+            - "@pvr_ezcomment.encryption"
+            - "@router"
         calls:
             - [ setTranslator, ["@translator"] ]
             - [ setFormFactory, ["@form.factory"] ]
-            - [ setTemplating, ["@templating"] ]
+            - [ setTwig, ["@twig"] ]
 
     pvr_ezcomment.encryption:
-        class: %pvr_ezcomment.encryption.class%
+        class: "%pvr_ezcomment.encryption.class%"
         arguments:
-            - %secret%
+            - "%secret%"
 
     ezpublish.api.role.limitation_type.content_section:
-        class: %ezpublish.api.role.limitation_type.content_section.class%
-        arguments: [@ezpublish.api.persistence_handler]
+        class: "%ezpublish.api.role.limitation_type.content_section.class%"
+        arguments: ["@ezpublish.api.persistence_handler"]
         tags:
             - {name: ezpublish.limitationType, alias: ContentSection}
 
     ezpublish.twig.pvrezcomment_extension:
-        class: %pvr_ezcomment.twig_extension.class%
-        arguments: [@pvr_ezcomment.manager, @ezpublish.connection]
+        class: "%pvr_ezcomment.twig_extension.class%"
+        arguments:
+            - "@pvr_ezcomment.manager"
+            - "@ezpublish.connection"
+            - "@ezpublish.api.service.content"
+            - "@ezpublish.translation_helper"
+            - "@ezpublish.api.service.location"
         tags:
             - { name: twig.extension }
 
     pvr_ezcomment.service:
-        class: %pvr_ezcomment.service.class%
+        class: "%pvr_ezcomment.service.class%"
         calls:
             - [setRequest, ["@request_stack"]]
             - [setSecurity, ["@security.context"]]
         arguments:
-            - @pvr_ezcomment.manager
-            - @ezpublish.connection
-            - @ezpublish.locale.converter
-            - @translator
-            - @ezpublish.api.repository
+            - "@pvr_ezcomment.manager"
+            - "@ezpublish.connection"
+            - "@ezpublish.locale.converter"
+            - "@translator"
+            - "@ezpublish.api.repository"
 
+    # Pjax Dashboard Controller service
+    pvr_ezcomment.controller.dashboard:
+        class: '%pvr_ezcomment.controller.dashboard.class%'
+        parent: ezsystems.platformui.controller.base
 
+    # Rest Controller
+    pvrEzCommentBundle.controller.comment:
+        class: pvr\EzCommentBundle\Rest\Controller\CommentController
+        parent: ezpublish_rest.controller.base

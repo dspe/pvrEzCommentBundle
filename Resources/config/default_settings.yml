@@ -1,0 +1,9 @@
+system:
+    default:
+        rest_root_resources:
+            deleteComment:
+                mediaType: 'Comment'
+                href: 'router.generate("pvrezcomment_delete_comment", {commentId: "{id}"})'
+            statusComment:
+                mediaType: 'Comment'
+                href: 'router.generate("pvrezcomment_status_comment", {commentId: "{commentId}", statusId: "{statusId}"})'

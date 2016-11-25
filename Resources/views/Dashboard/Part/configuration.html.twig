@@ -1,0 +1,19 @@
+<h3>Configuration</h3>
+<table class="status">
+    <thead>
+    <tr>
+        <th>Anonymous</th>
+        <th>Moderating</th>
+        <th>Moderate Email</th>
+        <th>Notify Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td data-label="Anonymous">{{ config.anonymous ? 'True' : 'False' }}</td>
+        <td data-label="Moderating">{{ config.moderating ? 'True' : 'False' }}</td>
+        <td data-label="Moderate Email">{{ config.moderate_from }}</td>
+        <td data-label="Notify Email">{{ config.notify_enabled ? 'True' : 'False' }}</td>
+    </tr>
+    </tbody>
+</table>

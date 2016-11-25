@@ -1,0 +1,117 @@
+.ez-view-pvrezcommentdashboardview {
+    background: #fff;
+}
+
+.ez-view-pvrezcommentdashboardview .pvrezcomment-title {
+    margin-top: 0;
+}
+
+.ez-view-pvrezcommentdashboardview .pvrezcomment-dashboard {
+    margin: 0 auto;
+}
+
+.ez-view-pvrezcommentdashboardview .l-box {
+    padding: 1em;
+}
+
+.ez-view-pvrezcommentdashboardview table {
+    width: 100%;
+}
+
+/**
+ * Display tools to accept, reject and delete a comment
+ **/
+.ez-view-pvrezcommentdashboardview .tools {
+    display: block;
+    font-size: 0.9em;
+    text-align: center;
+    padding-top: 5px;
+}
+.ez-view-pvrezcommentdashboardview .pvrezcomment-status-link {
+    color: #525252;
+}
+.ez-view-pvrezcommentdashboardview .pvrezcomment-status-link:first-of-type {
+    color: #49941b;
+}
+.ez-view-pvrezcommentdashboardview .pvrezcomment-delete-link {
+    color: #ff0000;
+}
+.ez-view-pvrezcommentdashboardview .pvrezcomment-status-link:hover,
+.ez-view-pvrezcommentdashboardview .pvrezcomment-delete-link:hover
+ {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/**
+ * Filter toolbar
+ **/
+.ez-view-pvrezcommentdashboardview .pvrezcomment-toolbar {
+    display: block;
+    padding: 5px;
+    text-align: right;
+}
+
+/**
+ * Display right table
+ **/
+.ez-view-pvrezcommentdashboardview table.status thead {
+    display: none;
+}
+
+.ez-view-pvrezcommentdashboardview table.status thead {
+    display: none;
+}
+
+.ez-view-pvrezcommentdashboardview table.status tbody {
+    font-size: 0.9em;
+}
+
+.ez-view-pvrezcommentdashboardview table.status tr {
+    margin-bottom: 10px;
+    display: block;
+    border-bottom: 2px solid #ddd;
+}
+
+.ez-view-pvrezcommentdashboardview table.status td {
+    padding: 2px 0;
+    display: block;
+    text-align: right;
+    font-size: 13px;
+    border-bottom: 1px dotted #ccc;
+}
+
+.ez-view-pvrezcommentdashboardview table.status td:before {
+    content: attr(data-label);
+    float: left;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.ez-view-pvrezcommentdashboardview table.status td:last-child {
+    border-bottom: 0;
+}
+
+/**
+ * Pagination
+ **/
+.ez-view-pvrezcommentdashboardview .prvezcomment-pagination {
+    margin: 0;
+    width: 100%;
+    list-style-type: none;
+}
+
+.ez-view-pvrezcommentdashboardview .pvrezcomment-page {
+    display: inline-block;
+    width: 40%;
+}
+
+.ez-view-pvrezcommentdashboardview .pvrezcomment-previous {
+    text-align: right;
+    margin-right: 1em;
+}
+
+.ez-view-pvrezcommentdashboardview .pvrezcomment-next {
+     text-align: left;
+     margin-left: 1em;
+ }
