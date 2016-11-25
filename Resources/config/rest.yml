@@ -1,0 +1,11 @@
+pvrezcomment_delete_comment:
+    pattern: /comment/delete/{commentId}
+    defaults:
+        _controller: pvrEzCommentBundle.controller.comment:delete
+    methods: [DELETE]
+
+pvrezcomment_status_comment:
+    pattern: /comment/status/{commentId}/{statusId}
+    defaults:
+        _controller: pvrEzCommentBundle.controller.comment:status
+    methods: [POST]

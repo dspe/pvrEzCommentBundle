@@ -45,11 +45,14 @@ class PvrEzCommentExtension extends Extension implements PrependExtensionInterfa
                     'from' => "noreply@example.com",
                     'template' => "pvrEzCommentbundle:mail:email.txt.twig"
                 ),
+                'dashboard' => array(
+                    'limit' => 10
+                ),
             ),
             $config
         );
 
-        $container->setParameter( 'pvr_ezcomment.config',  array( 
+        $container->setParameter( 'pvr_ezcomment.config',  array(
             "anonymous"         => $config['anonymous'],
             "moderating"        => $config['moderating'],
             "comment_reply"     => $config['comment_reply'],
@@ -57,7 +60,8 @@ class PvrEzCommentExtension extends Extension implements PrependExtensionInterfa
             "moderate_from"     => $config['moderate_mail']['from'],
             "moderate_to"       => $config['moderate_mail']['to'],
             "moderate_template" => $config['moderate_mail']['template'],
-            "notify_enabled"    => $config['notify_mail']['enabled']
+            "notify_enabled"    => $config['notify_mail']['enabled'],
+            "dashboard_limit"   => $config['dashboard']['limit'],
         ));
     }
 
@@ -73,6 +77,7 @@ class PvrEzCommentExtension extends Extension implements PrependExtensionInterfa
 
         $this->prependYui( $container );
         $this->prependCss( $container );
+        $this->prependRest( $container );
     }
 
     public function prependYui( ContainerBuilder $container )
@@ -93,5 +98,13 @@ class PvrEzCommentExtension extends Extension implements PrependExtensionInterfa
         $config = Yaml::parse( file_get_contents( $cssConfigFile ) );
         $container->prependExtensionConfig( 'ez_platformui', $config );
         $container->addResource( new FileResource( $cssConfigFile ) );
+    }
+
+    public function prependRest( ContainerBuilder $container )
+    {
+        $restFile = __DIR__ . '/../Resources/config/default_settings.yml';
+        $config = Yaml::parse(file_get_contents($restFile));
+        $container->prependExtensionConfig('ez_publish_rest', $config);
+        $container->addResource(new FileResource($restFile));
     }
 }
