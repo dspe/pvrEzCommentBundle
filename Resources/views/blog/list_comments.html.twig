@@ -1,7 +1,11 @@
 <a name="comments"></a>
 <h4>{{ comments|length }} {% trans %}Comment(s){% endtrans %}</h4>
 
-{{ render( controller( "PvrEzCommentBundle:Comment:getFormComment", {'contentId': contentId })) }}
+{% if params.canComment %}
+    {{ render( controller( "PvrEzCommentBundle:Comment:getFormComment", {'contentId': contentId })) }}
+{% else %}
+    <div class="comment-error">Current user doesn't have access to post a comment !</div>
+{% endif %}
 
 {% if comments %}
     {% if ezpublish.viewParameters is defined and ezpublish.viewParameters is not empty %}
