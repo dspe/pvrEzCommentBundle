@@ -30,6 +30,8 @@ pvr_ez_comment:
         subject:  "Notify mail"
         from:     "noreply@example.com"
         template: "PvrEzCommentbundle:mail:email.txt.twig"
+    dashboard:
+        limit:    5
 ```
 
 **Description**
@@ -43,6 +45,8 @@ settings and *notify_mail* settings.
 You could define a new *subject*, *template* and so on.
 
 ```notify_mail```: when a comment is approved, a mail could be sent to visitor to notice it.
+
+```limit```: number of element to display on PlatformUI
 
 
 **Note**

@@ -1,23 +1,27 @@
 # Step 1: Install dependencies
 
 In order to work fully, this bundle need to have some dependencies:
-* [eZ Commment (Legacy)](https://github.com/ezsystems/ezcomments/tree/master/packages/ezcomments_extension/ezextension/ezcomments)
 * [Gregwar's CaptchaBundle](https://github.com/Gregwar/CaptchaBundle)
 * SwiftMailer Bundle
 
-## a) Install eZ Comment on Legacy Kernel
+## a) Install Pvr eZ Comment
 
 ### Via composer
 
-If you use eZ Publish 5.4 or last community version ( >= 2014.11 )
+If you use eZ Platform >=1.6 or eZ Studio > 1.6 
 ```
-php composer.phar require --prefer-dist dspe/pvrezcommentbundle:@dev
+php composer.phar require --prefer-dist dspe/pvrezcommentbundle:~2.0
 ```
 
-```
-For this step, please read full [installation documentation](https://github.com/ezsystems/ezcomments/blob/master/packages/ezcomments_extension/ezextension/ezcomments/doc/INSTALL)
+## b) Install SQL schema (optional if not an upgrade)
 
-## b) Configure your users roles
+You need to run this command line to install SQL Schema:
+
+```
+php app/console ezplatform:install comment
+```
+
+## c) Configure your users roles
 
 If you would like that ezuser could post some comment, you have to add this policies to your role: ```comment/add```
 
